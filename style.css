@@ -237,9 +237,18 @@ a {
     left: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(circle at center, rgba(10, 10, 10, 0.1) 0%, rgba(10, 10, 10, 0.45) 100%), url('images/hero_bg_new.jpg');
+    background:
+        linear-gradient(
+            to bottom,
+            rgba(10, 10, 10, 0.55) 0%,
+            rgba(10, 10, 10, 0.15) 30%,
+            rgba(10, 10, 10, 0.10) 60%,
+            rgba(10, 10, 10, 0.50) 100%
+        ),
+        url('images/hero_bg_new.jpg');
     background-size: cover;
     background-position: center center;
+    background-repeat: no-repeat;
     opacity: 1;
     z-index: 1;
 }
