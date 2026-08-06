@@ -24,6 +24,7 @@ html {
     font-size: 16px;
     background-color: var(--bg-obsidian);
     color: var(--text-ivory);
+    overflow-x: hidden;
 }
 
 body {
@@ -31,6 +32,7 @@ body {
     font-weight: 300;
     line-height: 1.8;
     overflow-x: hidden;
+    max-width: 100vw;
     letter-spacing: 0.05em;
     -webkit-font-smoothing: antialiased;
 }
@@ -1219,11 +1221,13 @@ a {
 .phone-input-wrapper {
     display: flex;
     gap: 0.75rem;
+    flex-wrap: wrap;
 }
 
 .country-code-select-container {
     width: 110px;
     flex-shrink: 0;
+    min-width: 100px;
 }
 
 .country-code-select-container select {
@@ -1231,6 +1235,11 @@ a {
     padding-right: 2.2rem;
     padding-left: 0.8rem;
     text-align: left;
+}
+
+.phone-input-wrapper input[type="tel"] {
+    flex: 1;
+    min-width: 0;
 }
 
 .btn-submit {
@@ -1460,8 +1469,10 @@ a {
     /* Base */
     html { font-size: 15px; }
 
+    * { max-width: 100%; }
+
     .container {
-        padding: 0 1.5rem;
+        padding: 0 1.2rem;
     }
 
     /* Header */
@@ -1470,15 +1481,21 @@ a {
     }
 
     .header-container {
-        padding: 0.9rem 1.5rem;
+        padding: 0.7rem 1.2rem;
+        min-height: 70px;
     }
 
     .header-logo-img {
-        height: 75px;
+        height: 60px;
     }
 
     .mobile-nav-toggle {
         display: flex;
+        padding: 10px;
+        min-width: 44px;
+        min-height: 44px;
+        align-items: center;
+        justify-content: center;
     }
 
     .primary-nav {
@@ -1488,6 +1505,7 @@ a {
         width: 100%;
         background-color: rgba(10, 10, 10, 0.97);
         backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
         border-bottom: 1px solid var(--border-color);
         padding: 2rem 1.5rem;
         display: none;
@@ -1505,8 +1523,10 @@ a {
     }
 
     .nav-link {
-        font-size: 0.95rem;
+        font-size: 1rem;
         letter-spacing: 0.18em;
+        display: block;
+        padding: 0.5rem 1rem;
     }
 
     .header-action .btn-nav-cta {
@@ -1516,19 +1536,26 @@ a {
     /* Hero */
     .hero-section {
         min-height: 100svh;
-        padding: 10rem 1.5rem 5rem;
+        min-height: 100vh;
+        padding: 8rem 1.2rem 4rem;
     }
 
     .hero-logo-main {
-        height: 120px;
+        height: 110px;
     }
 
     .hero-title {
-        font-size: 1.6rem;
+        font-size: 1.5rem;
+        word-break: break-word;
     }
 
     .hero-title .accent-text {
-        font-size: 1.3rem;
+        font-size: 1.2rem;
+    }
+
+    .hero-tagline-sub {
+        font-size: 0.6rem;
+        letter-spacing: 0.35em;
     }
 
     .scroll-indicator {
@@ -1537,11 +1564,11 @@ a {
 
     /* Statement */
     .statement-section {
-        padding: 6rem 1.5rem;
+        padding: 5rem 1.2rem;
     }
 
     .brand-blockquote {
-        font-size: 1.6rem;
+        font-size: 1.5rem;
     }
 
     .statement-body {
@@ -1551,6 +1578,7 @@ a {
     /* House / Origin / Ingredients sections */
     .section-grid {
         flex-direction: column;
+        min-height: unset;
     }
 
     .grid-reverse {
@@ -1558,29 +1586,37 @@ a {
     }
 
     .grid-image-column {
-        height: 350px;
+        height: 300px;
+        flex: none;
+        width: 100%;
     }
 
     .grid-content-column {
-        padding: 3.5rem 1.5rem;
+        padding: 3rem 1.2rem;
+        flex: none;
+        width: 100%;
     }
 
     .section-title {
-        font-size: 2rem;
+        font-size: 1.9rem;
     }
 
     .section-lead {
-        font-size: 1.05rem;
+        font-size: 1rem;
+    }
+
+    .content-subblock h3 {
+        font-size: 1.15rem;
     }
 
     .materials-cloud {
-        font-size: 1.3rem;
-        gap: 0.8rem 1.2rem;
+        font-size: 1.2rem;
+        gap: 0.8rem 1rem;
     }
 
     /* Cosmetics Section */
     .cosmetics-section {
-        padding: 6rem 0;
+        padding: 5rem 0;
     }
 
     .cosmetics-section .section-header-centered .section-label {
@@ -1588,46 +1624,46 @@ a {
     }
 
     .cosmetics-section .section-header-centered .section-title {
-        font-size: 2.6rem;
+        font-size: 2.4rem;
     }
 
     .cosmetics-section .section-header-centered .section-lead {
-        font-size: 1.1rem;
+        font-size: 1rem;
     }
 
     .cosmetics-scroller-container {
         padding: 2rem 0;
-        margin: 1.5rem 0 3.5rem 0;
+        margin: 1.5rem 0 3rem 0;
     }
 
     .cosmetics-scroller-container::before,
     .cosmetics-scroller-container::after {
-        width: 60px;
+        width: 50px;
     }
 
     .cosmetics-scroller-item {
-        width: 180px;
+        width: 175px;
         padding: 1.5rem 1rem;
     }
 
     .cosmetics-scroller-item img {
-        width: 140px;
-        height: 140px;
+        width: 135px;
+        height: 135px;
     }
 
     .cosmetics-scroller-track {
-        width: calc(180px * 16 + 2rem * 16);
+        width: calc(175px * 16 + 2rem * 16);
         gap: 2rem;
         animation: scrollRotateMobile 35s linear infinite;
     }
 
     @keyframes scrollRotateMobile {
         0%   { transform: translateX(0); }
-        100% { transform: translateX(calc(-180px * 8 - 2rem * 8)); }
+        100% { transform: translateX(calc(-175px * 8 - 2rem * 8)); }
     }
 
     .cosmetics-intro-block {
-        padding: 2rem 1.5rem;
+        padding: 2rem 1.2rem;
         margin-bottom: 3rem;
     }
 
@@ -1638,24 +1674,24 @@ a {
     /* Skincare / Haircare Showcases */
     .skincare-showcase-container,
     .haircare-showcase-container {
-        padding: 1.5rem;
+        padding: 1.2rem;
     }
 
     .skincare-showcase-grid,
     .haircare-showcase-grid {
         grid-template-columns: 1fr;
-        gap: 2rem;
+        gap: 1.5rem;
     }
 
     .skincare-image-wrap,
     .haircare-image-wrap {
-        min-height: 280px;
+        min-height: 260px;
         padding: 1rem;
     }
 
     .skincare-product-img,
     .haircare-product-img {
-        max-height: 280px;
+        max-height: 260px;
     }
 
     .skincare-cards-wrap {
@@ -1668,7 +1704,7 @@ a {
     }
 
     .cosmetic-card {
-        padding: 2rem 1.5rem;
+        padding: 1.8rem 1.2rem;
     }
 
     .cosmetics-highlights-grid.grid-2 {
@@ -1678,11 +1714,11 @@ a {
     }
 
     .highlight-card {
-        padding: 2.5rem 1.5rem;
+        padding: 2rem 1.2rem;
     }
 
     .promise-quote {
-        font-size: 1.15rem;
+        font-size: 1.1rem;
     }
 
     .collection-header {
@@ -1690,17 +1726,17 @@ a {
     }
 
     .collection-header .collection-title {
-        font-size: 1.8rem;
+        font-size: 1.7rem;
     }
 
     /* Private Access / Form */
     .private-access-section {
-        padding: 6rem 0;
+        padding: 5rem 0;
     }
 
     .access-content-wrapper {
-        padding: 0 1.5rem;
-        gap: 2.5rem;
+        padding: 0 1.2rem;
+        gap: 2rem;
     }
 
     .access-content-wrapper.grid-2 {
@@ -1716,7 +1752,7 @@ a {
     }
 
     .baamann-enquiry-form {
-        padding: 2rem 1.5rem;
+        padding: 1.8rem 1.2rem;
     }
 
     .form-row.grid-2 {
@@ -1724,16 +1760,28 @@ a {
         gap: 0;
     }
 
+    .phone-input-wrapper {
+        flex-direction: row;
+        gap: 0.5rem;
+    }
+
+    .country-code-select-container {
+        width: 90px;
+        min-width: 90px;
+    }
+
     .form-group input,
     .form-group textarea,
     .form-group select {
-        font-size: 1rem; /* Prevents iOS auto-zoom */
+        font-size: 16px; /* Prevents iOS auto-zoom */
         padding: 0.9rem 1rem;
     }
 
     .btn-submit {
         padding: 1.1rem;
         font-size: 0.8rem;
+        min-height: 48px;
+        letter-spacing: 0.15em;
     }
 
     /* Footer */
@@ -1743,8 +1791,8 @@ a {
 
     .footer-top-grid {
         flex-direction: column;
-        gap: 2.5rem;
-        padding: 0 1.5rem;
+        gap: 2rem;
+        padding: 0 1.2rem;
     }
 
     .footer-brand-info {
@@ -1759,14 +1807,33 @@ a {
         flex-direction: column;
         gap: 1rem;
         text-align: center;
-        padding: 2rem 1.5rem 0 1.5rem;
+        padding: 2rem 1.2rem 0 1.2rem;
     }
 
-    /* Section-level padding */
+    /* Section borders */
     .house-section,
     .origin-section,
     .ingredients-section {
         border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    /* Ensure images never overflow */
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    /* Fix provenance text */
+    .provenance-statement {
+        padding-left: 1rem;
+        font-size: 0.9rem;
+    }
+
+    /* Investment block */
+    .investment-price {
+        font-size: 0.8rem;
+        letter-spacing: 0.1em;
+        word-break: break-word;
     }
 }
 
@@ -1775,59 +1842,69 @@ a {
     html { font-size: 14px; }
 
     .container {
-        padding: 0 1.2rem;
+        padding: 0 1rem;
     }
 
     .header-container {
-        padding: 0.8rem 1.2rem;
+        padding: 0.7rem 1rem;
+        min-height: 65px;
     }
 
     .header-logo-img {
-        height: 55px;
+        height: 52px;
     }
 
     /* Hero */
     .hero-section {
-        padding: 9rem 1.2rem 4rem;
+        padding: 7.5rem 1rem 4rem;
+        min-height: 100svh;
+        min-height: 100vh;
     }
 
     .hero-logo-main {
-        height: 90px;
+        height: 85px;
     }
 
     .hero-title {
-        font-size: 1.35rem;
+        font-size: 1.25rem;
+        word-break: break-word;
+    }
+
+    .hero-cta-wrapper .btn {
+        font-size: 0.72rem;
+        padding: 0.9rem 1.4rem;
+        letter-spacing: 0.15em;
     }
 
     /* Statement */
     .statement-section {
-        padding: 5rem 1.2rem;
+        padding: 4rem 1rem;
     }
 
     .brand-blockquote {
-        font-size: 1.35rem;
+        font-size: 1.3rem;
     }
 
     /* Section content */
     .grid-image-column {
-        height: 280px;
+        height: 250px;
     }
 
     .grid-content-column {
-        padding: 2.5rem 1.2rem;
+        padding: 2.5rem 1rem;
     }
 
     .section-title {
-        font-size: 1.7rem;
+        font-size: 1.65rem;
     }
 
     /* Cosmetics */
     .cosmetics-section .section-header-centered .section-title {
-        font-size: 2rem;
+        font-size: 1.9rem;
     }
 
     .cosmetics-scroller-item {
-        width: 150px;
+        width: 145px;
         padding: 1.2rem 0.8rem;
     }
 
@@ -1837,58 +1914,83 @@ a {
     }
 
     .cosmetics-scroller-track {
-        width: calc(150px * 16 + 1.5rem * 16);
+        width: calc(145px * 16 + 1.5rem * 16);
         gap: 1.5rem;
         animation: scrollRotateSmall 30s linear infinite;
     }
 
     @keyframes scrollRotateSmall {
         0%   { transform: translateX(0); }
-        100% { transform: translateX(calc(-150px * 8 - 1.5rem * 8)); }
+        100% { transform: translateX(calc(-145px * 8 - 1.5rem * 8)); }
     }
 
     .cosmetics-scroller-container::before,
     .cosmetics-scroller-container::after {
-        width: 40px;
+        width: 35px;
     }
 
     .skincare-image-wrap,
     .haircare-image-wrap {
-        min-height: 220px;
+        min-height: 200px;
     }
 
     .skincare-product-img,
     .haircare-product-img {
-        max-height: 220px;
+        max-height: 200px;
     }
 
     .cosmetic-card {
-        padding: 1.8rem 1.2rem;
+        padding: 1.5rem 1rem;
+    }
+
+    .cosmetic-card .cosmetic-title {
+        font-size: 1.2rem;
     }
 
     /* Form */
     .baamann-enquiry-form {
-        padding: 1.5rem 1.2rem;
+        padding: 1.5rem 1rem;
+    }
+
+    .phone-input-wrapper {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .country-code-select-container {
+        width: 100%;
     }
 
     /* Footer */
     .footer-top-grid {
-        padding: 0 1.2rem;
+        padding: 0 1rem;
     }
 
     .footer-bottom {
-        padding: 1.5rem 1.2rem 0 1.2rem;
+        padding: 1.5rem 1rem 0 1rem;
     }
 
     /* Materials */
     .materials-cloud {
-        font-size: 1.1rem;
-        gap: 0.6rem 1rem;
+        font-size: 1rem;
+        gap: 0.6rem 0.8rem;
     }
 
     /* Promise & Why boxes */
     .highlight-card {
-        padding: 2rem 1.2rem;
+        padding: 1.8rem 1rem;
+    }
+
+    .section-header-centered {
+        padding: 0 1rem;
+    }
+
+    .collection-header {
+        padding: 0 1rem;
+    }
+
+    .cosmetics-intro-block {
+        padding: 1.5rem 1rem;
     }
 }
 
