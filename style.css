@@ -133,8 +133,8 @@ a {
 }
 
 .btn-nav-cta {
-    font-size: 0.65rem;
-    padding: 0.45rem 1rem;
+    font-size: 0.75rem;
+    padding: 0.5rem 1.25rem;
     border-color: var(--accent-gold);
     color: var(--accent-gold);
 }
@@ -166,11 +166,14 @@ a {
 }
 
 .header-logo-img {
-    height: 50px;
+    height: 62px;
     width: auto;
     display: block;
     object-fit: contain;
+    object-position: center;
     border-radius: 4px;
+    /* Ensure logo is fully visible on dark background */
+    filter: brightness(1.05) contrast(1.05);
 }
 
 .primary-nav ul {
@@ -180,9 +183,9 @@ a {
 }
 
 .nav-link {
-    font-size: 0.7rem;
+    font-size: 0.82rem;
     font-weight: 400;
-    letter-spacing: 0.18em;
+    letter-spacing: 0.15em;
     color: var(--text-muted);
 }
 
@@ -1471,7 +1474,7 @@ a {
     }
 
     .header-logo-img {
-        height: 38px;
+        height: 48px;
     }
 
     .mobile-nav-toggle {
@@ -1502,8 +1505,8 @@ a {
     }
 
     .nav-link {
-        font-size: 0.85rem;
-        letter-spacing: 0.2em;
+        font-size: 0.95rem;
+        letter-spacing: 0.18em;
     }
 
     .header-action .btn-nav-cta {
