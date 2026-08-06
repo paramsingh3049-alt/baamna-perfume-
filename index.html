@@ -422,7 +422,23 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="phone">Phone / WhatsApp</label>
-                                    <input type="tel" id="phone" name="phone" required placeholder="+91 XXXXX XXXXX">
+                                    <div class="phone-input-wrapper">
+                                        <div class="country-code-select-container">
+                                            <select id="country-code" name="country_code" aria-label="Country Dial Code">
+                                                <option value="+91">🇮🇳 +91</option>
+                                                <option value="+1">🇺🇸 +1</option>
+                                                <option value="+44">🇬🇧 +44</option>
+                                                <option value="+971">🇦🇪 +971</option>
+                                                <option value="+65">🇸🇬 +65</option>
+                                                <option value="+61">🇦🇺 +61</option>
+                                                <option value="+49">🇩🇪 +49</option>
+                                                <option value="+33">🇫🇷 +33</option>
+                                                <option value="+81">🇯🇵 +81</option>
+                                                <option value="+966">🇸🇦 +966</option>
+                                            </select>
+                                        </div>
+                                        <input type="tel" id="phone" name="phone" required placeholder="XXXXX XXXXX">
+                                    </div>
                                 </div>
                             </div>
 

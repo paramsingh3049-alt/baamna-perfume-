@@ -53,6 +53,30 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
+    // Phone Country Code Change - Dynamic Placeholder
+    const countryCodeSelect = document.getElementById('country-code');
+    const phoneInput = document.getElementById('phone');
+
+    const countryPlaceholders = {
+        '+91': 'XXXXX XXXXX',
+        '+1': '(555) 019-9999',
+        '+44': '7700 900000',
+        '+971': '50 123 4567',
+        '+65': '8123 4567',
+        '+61': '412 345 678',
+        '+49': '151 23456789',
+        '+33': '6 12 34 56 78',
+        '+81': '90-1234-5678',
+        '+966': '50 123 4567'
+    };
+
+    if (countryCodeSelect && phoneInput) {
+        countryCodeSelect.addEventListener('change', () => {
+            const selectedVal = countryCodeSelect.value;
+            phoneInput.placeholder = countryPlaceholders[selectedVal] || 'Phone Number';
+        });
+    }
+
     // Form Submission Handling
     const enquiryForm = document.getElementById('enquiryForm');
     const successMessage = document.getElementById('successMessage');
@@ -61,6 +85,20 @@ document.addEventListener('DOMContentLoaded', () => {
         enquiryForm.addEventListener('submit', (e) => {
             e.preventDefault(); // Intercept page reload to make it look premium
             
+            // Extract and log details for demonstration/validation
+            const formData = new FormData(enquiryForm);
+            const fullPhone = `${formData.get('country_code')} ${formData.get('phone')}`;
+            console.log('BAAMANN enquiry submitted:', {
+                name: formData.get('fullname'),
+                email: formData.get('email'),
+                phone: fullPhone,
+                location: formData.get('location'),
+                contactMethod: formData.get('contact_method'),
+                reason: formData.get('reason'),
+                direction: formData.get('fragrance_direction'),
+                notes: formData.get('extra_notes')
+            });
+
             // Simulate API submission
             const submitBtn = document.getElementById('submitBtn');
             if (submitBtn) {

@@ -1212,6 +1212,24 @@ a {
     padding-right: 3rem;
 }
 
+/* Phone input with country code wrapper */
+.phone-input-wrapper {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.country-code-select-container {
+    width: 110px;
+    flex-shrink: 0;
+}
+
+.country-code-select-container select {
+    background-position: right 0.8rem center;
+    padding-right: 2.2rem;
+    padding-left: 0.8rem;
+    text-align: left;
+}
+
 .btn-submit {
     width: 100%;
     padding: 1.2rem;
