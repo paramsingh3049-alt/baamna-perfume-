@@ -217,6 +217,14 @@ a {
     transition: var(--transition-smooth);
 }
 
+.mobile-nav-toggle.open .line:nth-child(1) {
+    transform: translateY(3.5px) rotate(45deg);
+}
+
+.mobile-nav-toggle.open .line:nth-child(2) {
+    transform: translateY(-3.5px) rotate(-45deg);
+}
+
 /* Hero Section */
 .hero-section {
     position: relative;
