@@ -1417,15 +1417,7 @@ a {
     }
 
     .section-grid {
-        flex-direction: column;
-    }
-
-    .grid-reverse {
-        flex-direction: column;
-    }
-
-    .grid-image-column {
-        height: 400px;
+        min-height: 680px;
     }
 
     .grid-content-column {
@@ -1563,7 +1555,7 @@ a {
     }
 
     .grid-image-column {
-        height: 280px;
+        height: 350px;
     }
 
     .grid-content-column {
@@ -1815,7 +1807,7 @@ a {
 
     /* Section content */
     .grid-image-column {
-        height: 220px;
+        height: 280px;
     }
 
     .grid-content-column {
