@@ -166,7 +166,7 @@ a {
 }
 
 .header-logo-img {
-    height: 62px;
+    height: 95px;
     width: auto;
     display: block;
     object-fit: contain;
@@ -1474,7 +1474,7 @@ a {
     }
 
     .header-logo-img {
-        height: 48px;
+        height: 75px;
     }
 
     .mobile-nav-toggle {
@@ -1783,7 +1783,7 @@ a {
     }
 
     .header-logo-img {
-        height: 32px;
+        height: 55px;
     }
 
     /* Hero */
