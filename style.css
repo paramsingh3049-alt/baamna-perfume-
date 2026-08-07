@@ -616,8 +616,6 @@ a {
    PERFUME CAROUSEL — Infinite Auto-Scroll
    ═══════════════════════════════════════════════ */
 
-/* Keyframe: slide entire track left by exactly 50%
-   (half = original 4 images, so loop is seamless) */
 @keyframes carouselScroll {
     0%   { transform: translateX(0); }
     100% { transform: translateX(-50%); }
@@ -654,28 +652,26 @@ a {
     opacity: 0.6;
 }
 
-/* ── Viewport: hides overflow, positions fade overlays ── */
+/* ── Viewport ── */
 .carousel-viewport {
     position: relative;
     width: 100%;
     overflow: hidden;
 }
 
-/* Gradient fade on left and right edges */
+/* Gradient fade edges */
 .carousel-fade {
     position: absolute;
     top: 0;
     bottom: 0;
-    width: 120px;
+    width: 140px;
     z-index: 2;
     pointer-events: none;
 }
-
 .carousel-fade--left {
     left: 0;
     background: linear-gradient(to right, var(--bg-primary) 0%, transparent 100%);
 }
-
 .carousel-fade--right {
     right: 0;
     background: linear-gradient(to left, var(--bg-primary) 0%, transparent 100%);
@@ -684,95 +680,119 @@ a {
 /* ── Scrolling track ── */
 .carousel-track {
     display: flex;
-    align-items: center;
-    gap: 2.5rem;
-    /* 8 items total (4 original + 4 duplicate) — animation shifts by 50% */
+    align-items: stretch;        /* all cards same total height */
+    gap: 2rem;
     width: max-content;
-    animation: carouselScroll 30s linear infinite;
+    animation: carouselScroll 32s linear infinite;
     will-change: transform;
+    padding: 0.5rem 0 1.5rem;   /* room for box-shadow on hover */
 }
 
-/* Pause on hover for accessibility */
 .carousel-viewport:hover .carousel-track {
     animation-play-state: paused;
 }
 
-/* ── Individual card ── */
+/* ══════════════════════════════════════
+   CARD — uniform flex column layout
+   ══════════════════════════════════════ */
 .carousel-item {
     flex-shrink: 0;
-    width: 420px;
-    height: 300px;
-    background-color: #0a0a0a;
-    border: 1px solid rgba(197, 165, 120, 0.12);
+    width: 380px;               /* fixed card width — same for all */
     display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    position: relative;
-    transition: border-color 0.35s ease, box-shadow 0.35s ease;
+    flex-direction: column;     /* image on top, caption below */
+    background-color: #0b0b0b;
+    border: 1px solid rgba(197, 165, 120, 0.12);
+    transition: border-color 0.35s ease, box-shadow 0.35s ease, transform 0.35s ease;
 }
 
 .carousel-item:hover {
-    border-color: rgba(197, 165, 120, 0.40);
-    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
+    border-color: rgba(197, 165, 120, 0.45);
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.7);
+    transform: translateY(-4px);
 }
 
-/* ── Image: full visible, no crop, no stretch ── */
+/* ── Image box — fixed height, contain so full image shows ── */
+.carousel-img-box {
+    width: 100%;
+    height: 260px;              /* fixed height — identical across all cards */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #0b0b0b;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
 .carousel-img {
     display: block;
     width: 100%;
     height: 100%;
-    object-fit: contain;       /* full image always visible */
+    object-fit: contain;        /* full image — no cropping, no stretching */
     object-position: center;
-    image-rendering: auto;     /* browser bicubic — sharpest for photos */
+    image-rendering: auto;
+}
+
+/* ── Caption — below image, centered ── */
+.carousel-caption {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
+    padding: 1.2rem 1rem 1.4rem;
+    border-top: 1px solid rgba(197, 165, 120, 0.10);
+    text-align: center;
+    background-color: #0b0b0b;
+    flex-shrink: 0;
+}
+
+.carousel-perfume-name {
+    display: block;
+    font-family: var(--font-serif);
+    font-size: 1.05rem;
+    font-style: italic;
+    color: var(--accent-gold);
+    letter-spacing: 0.05em;
+    line-height: 1.3;
+}
+
+.carousel-perfume-category {
+    display: block;
+    font-family: var(--font-sans);
+    font-size: 0.68rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    line-height: 1;
 }
 
 /* ── Tablet (≤1024px) ── */
 @media (max-width: 1024px) {
-    .carousel-item {
-        width: 340px;
-        height: 240px;
-    }
-    .carousel-track {
-        gap: 2rem;
-        animation-duration: 26s;
-    }
-    .carousel-fade {
-        width: 80px;
-    }
+    .carousel-item    { width: 320px; }
+    .carousel-img-box { height: 220px; }
+    .carousel-track   { gap: 1.6rem; animation-duration: 28s; }
+    .carousel-fade    { width: 90px; }
 }
 
 /* ── Mobile (≤768px) ── */
 @media (max-width: 768px) {
-    .perfume-carousel-section {
-        padding: 5rem 0 4rem;
-    }
-    .carousel-title {
-        font-size: 1.8rem;
-    }
-    .carousel-item {
-        width: 260px;
-        height: 185px;
-    }
-    .carousel-track {
-        gap: 1.4rem;
-        animation-duration: 20s;
-    }
-    .carousel-fade {
-        width: 50px;
-    }
+    .perfume-carousel-section { padding: 5rem 0 4rem; }
+    .carousel-title            { font-size: 1.8rem; }
+    .carousel-item             { width: 240px; }
+    .carousel-img-box          { height: 170px; }
+    .carousel-perfume-name     { font-size: 0.9rem; }
+    .carousel-track            { gap: 1.2rem; animation-duration: 22s; }
+    .carousel-fade             { width: 55px; }
 }
 
 /* ── Small mobile (≤480px) ── */
 @media (max-width: 480px) {
-    .carousel-item {
-        width: 200px;
-        height: 142px;
-    }
-    .carousel-track {
-        gap: 1rem;
-        animation-duration: 16s;
-    }
+    .carousel-item    { width: 190px; }
+    .carousel-img-box { height: 135px; }
+    .carousel-track   { gap: 1rem; animation-duration: 18s; }
+    .carousel-fade    { width: 36px; }
+    .carousel-perfume-name { font-size: 0.82rem; }
+    .carousel-caption { padding: 0.9rem 0.8rem 1rem; }
 }
 
 /* Cosmetics Section */
