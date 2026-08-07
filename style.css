@@ -431,18 +431,22 @@ a {
     background-position: center;
     position: relative;
     overflow: hidden;
+    background-color: #0a0a0a;
 }
 
-/* Full-quality product image inside grid column */
+/* Full-quality product image — shown at native resolution, never upscaled */
 .house-product-img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    object-position: center;
+    object-fit: contain;           /* never stretch beyond native size */
+    object-position: center center;
     display: block;
     position: absolute;
     top: 0;
     left: 0;
+    image-rendering: -webkit-optimize-contrast; /* Chrome sharp rendering */
+    image-rendering: crisp-edges;               /* Firefox sharp rendering */
+    image-rendering: high-quality;              /* modern standard */
 }
 
 .image-overlay {
@@ -455,9 +459,14 @@ a {
     z-index: 1;
 }
 
-.house-section .image-overlay,
+/* House section: no overlay — show the image clean and sharp */
+.house-section .image-overlay {
+    display: none;
+}
+
 .origin-section .image-overlay {
     background: linear-gradient(135deg, rgba(10, 10, 10, 0.2) 0%, rgba(10, 10, 10, 0.45) 100%);
+    z-index: 1;
 }
 
 .grid-content-column {
@@ -1617,7 +1626,7 @@ a {
     }
 
     .grid-image-column {
-        height: 300px;
+        height: 420px;         /* tall enough to show the full product shot */
         flex: none;
         width: 100%;
     }
