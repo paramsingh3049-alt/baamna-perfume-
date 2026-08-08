@@ -1585,7 +1585,7 @@ a {
 .footer-tag {
     font-family: var(--font-serif);
     font-size: 1.8rem;
-    color: var(--text-ivory);
+    color: var(--accent-gold);
     margin-bottom: 1rem;
     letter-spacing: 0.1em;
 }
@@ -1599,7 +1599,7 @@ a {
     letter-spacing: 0.2em;
     text-transform: uppercase;
     margin-bottom: 1.5rem;
-    color: var(--text-ivory);
+    color: var(--accent-gold);
 }
 
 .footer-links ul {
