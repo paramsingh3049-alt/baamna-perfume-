@@ -494,6 +494,22 @@ a {
     line-height: 1.15;
 }
 
+.section-label::after {
+    content: '';
+    display: block;
+    margin: 0.55rem auto 0;
+    width: 52px;
+    height: 1px;
+    background: linear-gradient(
+        to right,
+        transparent,
+        rgba(212, 175, 55, 0.85) 30%,
+        rgba(212, 175, 55, 0.85) 70%,
+        transparent
+    );
+    border-radius: 1px;
+}
+
 .section-title {
     font-size: 2.8rem;
     margin-bottom: 2rem;
