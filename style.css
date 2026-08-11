@@ -270,8 +270,72 @@ a {
         transform: scale(1) translate(0, 0);
     }
     100% {
-        transform: scale(1.1) translate(-1%, 1%);
+        transform: scale(1.08) translate(-0.5%, 0.5%);
     }
+}
+
+/* Cinematic Video Overlay Effects */
+.cinematic-smoke {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+    z-index: 2;
+    background-image: radial-gradient(circle at 50% 50%, rgba(255,215,0,0.05) 0%, transparent 60%);
+    opacity: 0;
+    animation: smoke-drift 15s infinite alternate ease-in-out;
+    mix-blend-mode: screen;
+}
+
+.cinematic-smoke.layer-2 {
+    background-image: radial-gradient(circle at 30% 70%, rgba(255,255,255,0.03) 0%, transparent 50%);
+    animation: smoke-drift 20s infinite alternate-reverse ease-in-out;
+}
+
+@keyframes smoke-drift {
+    0% { transform: scale(1) translate(0, 0); opacity: 0.3; }
+    50% { opacity: 0.6; }
+    100% { transform: scale(1.2) translate(5%, -5%); opacity: 0.3; }
+}
+
+.cinematic-light-rays {
+    position: absolute;
+    top: -50%; left: -50%; right: -50%; bottom: -50%;
+    background: repeating-linear-gradient(
+        45deg,
+        transparent 0%,
+        rgba(255, 215, 0, 0.02) 10%,
+        transparent 20%
+    );
+    z-index: 3;
+    pointer-events: none;
+    animation: light-sweep 12s infinite linear;
+    mix-blend-mode: color-dodge;
+}
+
+@keyframes light-sweep {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.cinematic-reflection {
+    position: absolute;
+    top: 0; left: 0; width: 200%; height: 100%;
+    background: linear-gradient(
+        to right,
+        transparent 0%,
+        rgba(255, 255, 255, 0.08) 50%,
+        transparent 100%
+    );
+    z-index: 4;
+    pointer-events: none;
+    transform: skewX(-20deg) translateX(-150%);
+    animation: lens-flare 8s infinite ease-in-out;
+    mix-blend-mode: overlay;
+}
+
+@keyframes lens-flare {
+    0%, 50% { transform: skewX(-20deg) translateX(-150%); }
+    100% { transform: skewX(-20deg) translateX(100%); }
 }
 
 .hero-content {
