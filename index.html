@@ -689,6 +689,86 @@
         </div>
     </footer>
 
+    <!-- ═══════════════════════════════════════════════
+         LUXURY CUSTOM CURSOR
+    ════════════════════════════════════════════════ -->
+    <div id="cursor-ring"  aria-hidden="true"></div>
+    <div id="cursor-dot"   aria-hidden="true"></div>
+
     <script src="app.js"></script>
+
+    <script>
+    /* ── BAAMANN Luxury Cursor ─────────────────────── */
+    (function () {
+        const ring = document.getElementById('cursor-ring');
+        const dot  = document.getElementById('cursor-dot');
+
+        /* Current & lagged ring position for smooth trailing */
+        let mx = -200, my = -200;   // real mouse
+        let rx = -200, ry = -200;   // ring (lagged)
+        let isHover   = false;
+        let isClicking = false;
+        let rafId;
+
+        /* ── Track real mouse ── */
+        document.addEventListener('mousemove', (e) => {
+            mx = e.clientX;
+            my = e.clientY;
+
+            /* Dot snaps instantly */
+            dot.style.transform  = `translate(${mx}px, ${my}px) translate(-50%, -50%)`;
+        });
+
+        /* ── Click pulse ── */
+        document.addEventListener('mousedown', () => {
+            isClicking = true;
+            ring.classList.add('is-clicking');
+            dot.classList.add('is-clicking');
+        });
+        document.addEventListener('mouseup', () => {
+            isClicking = false;
+            ring.classList.remove('is-clicking');
+            dot.classList.remove('is-clicking');
+        });
+
+        /* ── Hover detection: buttons, links, images, inputs ── */
+        const hoverTargets = 'a, button, [role="button"], img, input, textarea, select, label, .carousel-btn, .nav-link, .cta-button, .product-card, .skincare-product-img, .haircare-product-img';
+
+        document.addEventListener('mouseover', (e) => {
+            if (e.target.matches(hoverTargets) || e.target.closest(hoverTargets)) {
+                isHover = true;
+                ring.classList.add('is-hover');
+                dot.classList.add('is-hover');
+            }
+        });
+        document.addEventListener('mouseout', (e) => {
+            if (e.target.matches(hoverTargets) || e.target.closest(hoverTargets)) {
+                isHover = false;
+                ring.classList.remove('is-hover');
+                dot.classList.remove('is-hover');
+            }
+        });
+
+        /* ── Hide cursor when it leaves the window ── */
+        document.addEventListener('mouseleave', () => {
+            ring.style.opacity = '0';
+            dot.style.opacity  = '0';
+        });
+        document.addEventListener('mouseenter', () => {
+            ring.style.opacity = '';
+            dot.style.opacity  = '';
+        });
+
+        /* ── Smooth ring animation loop ── */
+        const EASE = 0.10; // lower = more lag / silkier
+        function animate() {
+            rx += (mx - rx) * EASE;
+            ry += (my - ry) * EASE;
+            ring.style.transform = `translate(${rx}px, ${ry}px) translate(-50%, -50%)`;
+            rafId = requestAnimationFrame(animate);
+        }
+        animate();
+    })();
+    </script>
 </body>
 </html>
