@@ -736,6 +736,8 @@ a {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
+    text-align: center;
 }
 
 .section-label {
@@ -750,6 +752,7 @@ a {
     text-transform: uppercase;
     text-shadow: 0 0 18px rgba(212, 175, 55, 0.55), 0 2px 8px rgba(0,0,0,0.45);
     line-height: 1.15;
+    text-align: center;
 }
 
 .section-label::after {
@@ -771,6 +774,7 @@ a {
 .section-title {
     font-size: 2.8rem;
     margin-bottom: 2rem;
+    text-align: center;
 }
 
 .house-section .section-title {
@@ -788,6 +792,7 @@ a {
     color: var(--text-ivory);
     font-family: var(--font-serif);
     font-style: italic;
+    text-align: center;
     margin-bottom: 2.5rem;
     line-height: 1.6;
 }
