@@ -250,15 +250,61 @@ a {
     z-index: 1;
 }
 
-.hero-bg-img {
+/* Background scene image - fills the full hero area */
+.hero-bg-scene {
     display: block;
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: cover;
     object-position: center center;
     position: absolute;
     top: 0;
     left: 0;
+    z-index: 0;
+    filter: brightness(0.85);
+}
+
+/* Main product image layered over background */
+.hero-bg-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    -webkit-mask-image: linear-gradient(
+        to right,
+        transparent 0%,
+        black 20%,
+        black 80%,
+        transparent 100%
+    ),
+    linear-gradient(
+        to bottom,
+        transparent 0%,
+        black 10%,
+        black 90%,
+        transparent 100%
+    );
+    -webkit-mask-composite: intersect;
+    mask-image: linear-gradient(
+        to right,
+        transparent 0%,
+        black 20%,
+        black 80%,
+        transparent 100%
+    ),
+    linear-gradient(
+        to bottom,
+        transparent 0%,
+        black 10%,
+        black 90%,
+        transparent 100%
+    );
+    mask-composite: intersect;
 }
 
 .animated-hero {
