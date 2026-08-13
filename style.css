@@ -389,7 +389,8 @@ a {
     top: 0;
     left: 0;
     z-index: 0;
-    filter: brightness(0.85);
+    filter: brightness(0.6) blur(20px);
+    transform: scale(1.1);
 }
 
 /* Main product image layered over background */
