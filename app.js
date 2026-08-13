@@ -1,7 +1,3 @@
-const supabaseUrl = 'https://lfvlbspcatlnglfcsnap.supabase.co';
-const supabaseKey = 'sb_publishable_rbH2prTMxhMWFmXWYCXYmQ_FmQTsuRa';
-const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
-
 document.addEventListener('DOMContentLoaded', () => {
     
     // Set Current Year in Footer
@@ -99,6 +95,11 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             try {
+                // Initialize Supabase only on form submission
+                const supabaseUrl = 'https://lfvlbspcatlnglfcsnap.supabase.co';
+                const supabaseKey = 'sb_publishable_rbH2prTMxhMWFmXWYCXYmQ_FmQTsuRa';
+                const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
                 const { data, error } = await supabase
                     .from('enquiries')
                     .insert([
