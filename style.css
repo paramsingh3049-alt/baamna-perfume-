@@ -399,15 +399,13 @@ a {
     height: 92%;
     margin: auto;
     object-fit: contain;
-    object-position: center center;
+    object-position: center bottom;
     position: absolute;
     top: 0;
     bottom: 0;
     left: 0;
     right: 0;
     z-index: 1;
-    clip-path: inset(0 0 8% 0);
-    /* Removed aggressive mask gradients that were cropping the top/bottom/sides of the product image */
 }
 
 .animated-hero {
