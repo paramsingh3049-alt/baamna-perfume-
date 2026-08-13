@@ -664,6 +664,13 @@ a {
     justify-content: center;
 }
 
+/* House section: tall vertical bottle image - cover fill, top-aligned */
+.house-image-column {
+    background-size: cover !important;
+    background-position: center top !important;
+    min-height: 800px;
+}
+
 /*
   True native-resolution display:
   - width/height: auto  → never force-resize the image
