@@ -1,40 +1,92 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 180" width="260" height="180">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 380" width="500" height="380">
   <defs>
-    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#e8c96a;stop-opacity:1" />
-      <stop offset="35%" style="stop-color:#f5e08a;stop-opacity:1" />
-      <stop offset="60%" style="stop-color:#c9a84c;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#b8912a;stop-opacity:1" />
+    <!-- Gold metallic gradient -->
+    <linearGradient id="goldMetal" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%"   stop-color="#f0d060"/>
+      <stop offset="18%"  stop-color="#e8c040"/>
+      <stop offset="35%"  stop-color="#d4a017"/>
+      <stop offset="50%"  stop-color="#f5e070"/>
+      <stop offset="65%"  stop-color="#c8960a"/>
+      <stop offset="82%"  stop-color="#e8c040"/>
+      <stop offset="100%" stop-color="#b8820a"/>
+    </linearGradient>
+    <!-- Gold text gradient -->
+    <linearGradient id="goldText" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%"   stop-color="#f5e080"/>
+      <stop offset="40%"  stop-color="#d4a820"/>
+      <stop offset="70%"  stop-color="#f0d060"/>
+      <stop offset="100%" stop-color="#b8820a"/>
     </linearGradient>
   </defs>
 
-  <!-- Square border frame -->
-  <rect x="75" y="5" width="110" height="115" rx="0" ry="0"
-        fill="none" stroke="url(#goldGrad)" stroke-width="3"/>
+  <!-- Double-B Monogram using overlapping geometric B shapes -->
+  <!-- Outer B shape (spine + two lobes) -->
+  <g fill="url(#goldMetal)">
 
-  <!-- Inner thin border (double border effect) -->
-  <rect x="81" y="11" width="98" height="103" rx="0" ry="0"
-        fill="none" stroke="url(#goldGrad)" stroke-width="1.2"/>
+    <!-- === OUTER B PATH === -->
+    <!-- Spine (vertical bar) -->
+    <rect x="155" y="30" width="28" height="220"/>
 
-  <!-- Large serif B letter -->
-  <text x="130" y="86"
-        font-family="Garamond, 'Cormorant Garamond', 'Times New Roman', serif"
-        font-size="80"
-        font-weight="400"
-        text-anchor="middle"
-        fill="url(#goldGrad)"
-        letter-spacing="0">B</text>
+    <!-- Top horizontal bar -->
+    <rect x="155" y="30" width="120" height="22"/>
+    <!-- Bottom horizontal bar -->
+    <rect x="155" y="228" width="120" height="22"/>
+    <!-- Middle bar -->
+    <rect x="155" y="127" width="100" height="20"/>
 
-  <!-- BAAMANN text below the box -->
-  <text x="130" y="148"
-        font-family="'Montserrat', 'Futura', 'Trebuchet MS', Arial, sans-serif"
-        font-size="22"
-        font-weight="300"
-        text-anchor="middle"
-        fill="url(#goldGrad)"
-        letter-spacing="6">BAAMANN</text>
+    <!-- Upper lobe right curve (approximated with rect + circle) -->
+    <rect x="255" y="30" width="22" height="119"/>
+    <rect x="235" y="108" width="42" height="42"/>
 
-  <!-- Thin gold rule under BAAMANN -->
-  <line x1="60" y1="155" x2="200" y2="155"
-        stroke="url(#goldGrad)" stroke-width="0.7" opacity="0.7"/>
+    <!-- Lower lobe right curve -->
+    <rect x="265" y="147" width="22" height="103"/>
+    <rect x="245" y="208" width="42" height="42"/>
+
+    <!-- Upper lobe fill -->
+    <rect x="183" y="52" width="94" height="97"/>
+
+    <!-- Lower lobe fill -->
+    <rect x="183" y="147" width="104" height="103"/>
+
+  </g>
+
+  <!-- Cutout inner shape (creates the hollow double-line effect) -->
+  <g fill="black">
+    <!-- Inner upper lobe cutout -->
+    <rect x="193" y="62" width="65" height="65"/>
+    <rect x="248" y="62" width="12" height="55"/>
+
+    <!-- Inner lower lobe cutout -->
+    <rect x="193" y="163" width="73" height="73"/>
+    <rect x="256" y="163" width="14" height="60"/>
+  </g>
+
+  <!-- Inner highlight lines (double-line metallic effect) -->
+  <!-- Spine inner right edge highlight -->
+  <rect x="175" y="42" width="8" height="198" fill="url(#goldMetal)" opacity="0.5"/>
+
+  <!-- Top bar inner highlight -->
+  <rect x="175" y="42" width="100" height="7" fill="url(#goldMetal)" opacity="0.5"/>
+
+  <!-- Bottom bar inner highlight -->
+  <rect x="175" y="231" width="100" height="7" fill="url(#goldMetal)" opacity="0.5"/>
+
+  <!-- Middle bar inner highlight -->
+  <rect x="175" y="130" width="80" height="7" fill="url(#goldMetal)" opacity="0.5"/>
+
+  <!-- BAAMANN text -->
+  <text
+    x="250"
+    y="320"
+    font-family="'Cormorant Garamond', 'Garamond', 'Times New Roman', Georgia, serif"
+    font-size="52"
+    font-weight="600"
+    text-anchor="middle"
+    fill="url(#goldText)"
+    letter-spacing="14"
+  >BAAMANN</text>
+
+  <!-- Thin gold rule above text -->
+  <line x1="80" y1="275" x2="420" y2="275" stroke="url(#goldMetal)" stroke-width="1" opacity="0.6"/>
+
 </svg>
