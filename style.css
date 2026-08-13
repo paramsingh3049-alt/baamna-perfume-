@@ -297,14 +297,14 @@ a {
 }
 
 .header-logo-img {
-    height: 80px;
+    height: 90px;
     width: auto;
+    max-width: 200px;
     display: block;
     object-fit: contain;
-    object-position: center;
+    object-position: left center;
     border-radius: 0;
-    /* Ensure logo is fully visible on dark background */
-    filter: brightness(1.1) contrast(1.05) drop-shadow(0 0 6px rgba(212,168,32,0.3));
+    filter: drop-shadow(0 0 8px rgba(212,160,20,0.25));
 }
 
 .primary-nav ul {

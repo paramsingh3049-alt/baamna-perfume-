@@ -1,3 +1,7 @@
+const supabaseUrl = 'https://lfvlbspcatlnglfcsnap.supabase.co';
+const supabaseKey = 'sb_publishable_rbH2prTMxhMWFmXWYCXYmQ_FmQTsuRa';
+const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
 document.addEventListener('DOMContentLoaded', () => {
     
     // Set Current Year in Footer
@@ -82,37 +86,47 @@ document.addEventListener('DOMContentLoaded', () => {
     const successMessage = document.getElementById('successMessage');
 
     if (enquiryForm && successMessage) {
-        enquiryForm.addEventListener('submit', (e) => {
+        enquiryForm.addEventListener('submit', async (e) => {
             e.preventDefault(); // Intercept page reload to make it look premium
             
-            // Extract and log details for demonstration/validation
             const formData = new FormData(enquiryForm);
             const fullPhone = `${formData.get('country_code')} ${formData.get('phone')}`;
-            console.log('BAAMANN enquiry submitted:', {
-                name: formData.get('fullname'),
-                email: formData.get('email'),
-                phone: fullPhone,
-                location: formData.get('location'),
-                contactMethod: formData.get('contact_method'),
-                reason: formData.get('reason'),
-                direction: formData.get('fragrance_direction'),
-                notes: formData.get('extra_notes')
-            });
-
-            // Simulate API submission
+            
             const submitBtn = document.getElementById('submitBtn');
             if (submitBtn) {
                 submitBtn.textContent = 'TRANSMITTING ENQUIRY...';
                 submitBtn.disabled = true;
             }
 
-            setTimeout(() => {
+            try {
+                const { data, error } = await supabase
+                    .from('enquiries')
+                    .insert([
+                        {
+                            fullname: formData.get('fullname'),
+                            email: formData.get('email'),
+                            phone: fullPhone,
+                            location: formData.get('location'),
+                            contact_method: formData.get('contact_method'),
+                            reason: formData.get('reason'),
+                            fragrance_direction: formData.get('fragrance_direction'),
+                            extra_notes: formData.get('extra_notes')
+                        }
+                    ]);
+
+                if (error) throw error;
+
                 enquiryForm.classList.add('hidden');
                 successMessage.classList.remove('hidden');
-                
-                // Scroll into view of success box
                 successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }, 1500);
+            } catch (error) {
+                console.error('Error submitting enquiry:', error);
+                alert('There was an error submitting your enquiry. Please try again.');
+                if (submitBtn) {
+                    submitBtn.textContent = 'SUBMIT PRIVATE ENQUIRY';
+                    submitBtn.disabled = false;
+                }
+            }
         });
     }
 });
