@@ -385,13 +385,15 @@ a {
     height: auto;
     position: relative;
     z-index: 1;
-    filter: none;
+    filter: contrast(1.08) saturate(1.12) brightness(1.03);
     image-rendering: -webkit-optimize-contrast;
     image-rendering: crisp-edges;
     -ms-interpolation-mode: bicubic;
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
     vertical-align: top;
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
 }
 
 /* Main product image layered over background */
