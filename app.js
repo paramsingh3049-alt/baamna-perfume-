@@ -130,4 +130,55 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+
+    // House Section Perfume Scroller
+    const houseScroller = document.getElementById('houseScroller');
+    if (houseScroller) {
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+        let autoScrollInterval;
+
+        const startAutoScroll = () => {
+            autoScrollInterval = setInterval(() => {
+                houseScroller.scrollLeft += 1;
+                // Seamless infinite loop - reset when reaching halfway
+                if (houseScroller.scrollLeft >= houseScroller.scrollWidth / 2) {
+                     houseScroller.scrollLeft = 0;
+                }
+            }, 25);
+        };
+        
+        startAutoScroll();
+
+        // Pause auto-scroll on interaction
+        houseScroller.addEventListener('mouseenter', () => clearInterval(autoScrollInterval));
+        houseScroller.addEventListener('mouseleave', startAutoScroll);
+        houseScroller.addEventListener('touchstart', () => clearInterval(autoScrollInterval), {passive: true});
+        houseScroller.addEventListener('touchend', startAutoScroll, {passive: true});
+
+        // Mouse Drag to Scroll
+        houseScroller.addEventListener('mousedown', (e) => {
+            isDown = true;
+            houseScroller.style.scrollSnapType = 'none'; // smoother drag
+            startX = e.pageX - houseScroller.offsetLeft;
+            scrollLeft = houseScroller.scrollLeft;
+        });
+        houseScroller.addEventListener('mouseleave', () => {
+            isDown = false;
+            houseScroller.style.scrollSnapType = 'x mandatory';
+        });
+        houseScroller.addEventListener('mouseup', () => {
+            isDown = false;
+            houseScroller.style.scrollSnapType = 'x mandatory';
+        });
+        houseScroller.addEventListener('mousemove', (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - houseScroller.offsetLeft;
+            const walk = (x - startX) * 2;
+            houseScroller.scrollLeft = scrollLeft - walk;
+        });
+    }
 });
