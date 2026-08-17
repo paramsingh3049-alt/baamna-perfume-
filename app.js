@@ -1,5 +1,19 @@
 document.addEventListener('DOMContentLoaded', () => {
     
+    // Transparent header — becomes dark when scrolled past hero
+    const siteHeader = document.querySelector('.site-header');
+    const heroSection = document.getElementById('hero');
+    const onScroll = () => {
+        const heroBottom = heroSection ? heroSection.offsetHeight - 80 : 100;
+        if (window.scrollY > heroBottom) {
+            siteHeader.classList.add('scrolled');
+        } else {
+            siteHeader.classList.remove('scrolled');
+        }
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll(); // run once on load
+
     // Set Current Year in Footer
     const yearSpan = document.getElementById('current-year');
     if (yearSpan) {
