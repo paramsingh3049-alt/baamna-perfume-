@@ -365,36 +365,25 @@ a {
 .hero-section {
     position: relative;
     background-color: #0c0a07;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
+    display: block;
     padding: 0;
     overflow: hidden;
-    min-height: 100vh;
+    width: 100%;
 }
 
 .hero-video-wrapper {
-    position: absolute;
-    top: 0;
-    left: 0;
+    position: relative;
     width: 100%;
-    height: 100%;
-    overflow: hidden;
     z-index: 1;
+    line-height: 0;
 }
 
-/* Background scene image - shows the full image without cropping */
+/* Background scene image - fully visible, no cropping, no black bars */
 .hero-bg-scene {
     display: block;
     width: 100%;
-    height: 100%;
-    object-fit: contain;
-    object-position: center center;
-    position: absolute;
-    top: 0;
-    left: 0;
+    height: auto;
+    position: relative;
     z-index: 1;
     filter: none;
     image-rendering: -webkit-optimize-contrast;
@@ -402,6 +391,7 @@ a {
     -ms-interpolation-mode: bicubic;
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
+    vertical-align: top;
 }
 
 /* Main product image layered over background */
