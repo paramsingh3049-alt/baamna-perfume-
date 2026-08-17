@@ -2705,3 +2705,8 @@ a {
     }
 }
 
+
+/* 3D Scroll Optimizations */
+.hero-bg-scene, .grid-image-column, .house-aesthetic-img, .skincare-product-img, .haircare-product-img, .cosmetic-card { will-change: transform; }
+.hero-video-wrapper, .house-aesthetic-image-wrap { overflow: hidden; }
+

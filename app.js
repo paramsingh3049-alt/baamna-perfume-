@@ -181,4 +181,101 @@ document.addEventListener('DOMContentLoaded', () => {
             houseScroller.scrollLeft = scrollLeft - walk;
         });
     }
+
+    // --- Premium 3D Scroll & Parallax (Lenis + GSAP) ---
+    if (typeof Lenis !== 'undefined' && typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Initialize Lenis
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
+            direction: 'vertical',
+            gestureDirection: 'vertical',
+            smooth: true,
+            mouseMultiplier: 1,
+            smoothTouch: false,
+            touchMultiplier: 2,
+            infinite: false,
+        });
+
+        // Sync GSAP with Lenis
+        lenis.on('scroll', ScrollTrigger.update);
+        gsap.ticker.add((time) => {
+            lenis.raf(time * 1000);
+        });
+        gsap.ticker.lagSmoothing(0);
+
+        // 1. Hero Section Parallax (Zoom out & fade down slightly)
+        const heroBg = document.querySelector('.hero-bg-scene');
+        if (heroBg) {
+            gsap.to(heroBg, {
+                yPercent: 15,
+                scale: 1, // zooms out slightly
+                ease: 'none',
+                scrollTrigger: {
+                    trigger: '.hero-section',
+                    start: 'top top',
+                    end: 'bottom top',
+                    scrub: true
+                }
+            });
+        }
+
+        // 2. Parallax Background Images (Origin, Ingredients)
+        const bgColumns = document.querySelectorAll('.grid-image-column');
+        bgColumns.forEach(col => {
+            gsap.fromTo(col, 
+                { backgroundPosition: '50% 0%' },
+                {
+                    backgroundPosition: '50% 100%',
+                    ease: 'none',
+                    scrollTrigger: {
+                        trigger: col,
+                        start: 'top bottom',
+                        end: 'bottom top',
+                        scrub: true
+                    }
+                }
+            );
+        });
+
+        // 3. Floating 3D Depth for Foreground Images
+        const floatImages = document.querySelectorAll('.house-aesthetic-img, .skincare-product-img, .haircare-product-img');
+        floatImages.forEach(img => {
+            gsap.fromTo(img,
+                { y: -20, scale: 1.03 },
+                {
+                    y: 20,
+                    scale: 1,
+                    ease: 'none',
+                    scrollTrigger: {
+                        trigger: img.parentElement,
+                        start: 'top bottom',
+                        end: 'bottom top',
+                        scrub: 1
+                    }
+                }
+            );
+        });
+
+        // 4. Subtle Reveal for Cosmetics Cards
+        const cosmeticCards = document.querySelectorAll('.cosmetic-card');
+        cosmeticCards.forEach(card => {
+            gsap.fromTo(card,
+                { y: 30, opacity: 0 },
+                {
+                    y: 0,
+                    opacity: 1,
+                    duration: 1,
+                    ease: 'power3.out',
+                    scrollTrigger: {
+                        trigger: card,
+                        start: 'top 90%',
+                        toggleActions: 'play none none reverse'
+                    }
+                }
+            );
+        });
+    }
 });
