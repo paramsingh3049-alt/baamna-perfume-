@@ -2580,4 +2580,43 @@ a {
     }
 }
 
+/* ════════════════════════════════════════════════════════
+   HOUSE SECTION — AESTHETIC IMAGE (replaces scroller)
+   ════════════════════════════════════════════════════════ */
+
+.house-aesthetic-image-wrap {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 560px;
+    overflow: hidden;
+    border-radius: 2px;
+}
+
+.house-aesthetic-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    filter: brightness(0.92) contrast(1.05);
+    transition: transform 0.9s cubic-bezier(0.25, 1, 0.5, 1), filter 0.9s ease;
+    will-change: transform;
+}
+
+.house-aesthetic-image-wrap:hover .house-aesthetic-img {
+    transform: scale(1.04);
+    filter: brightness(1) contrast(1.08);
+}
+
+/* Subtle vignette overlay for editorial depth */
+.house-aesthetic-overlay {
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(ellipse at 50% 100%, rgba(10, 10, 10, 0.55) 0%, transparent 70%),
+        linear-gradient(to right, rgba(10, 10, 10, 0.35) 0%, transparent 40%, transparent 60%, rgba(10, 10, 10, 0.25) 100%);
+    pointer-events: none;
+    z-index: 1;
+}
 
