@@ -390,6 +390,11 @@ a {
     left: 0;
     z-index: 1;
     filter: none;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+    -ms-interpolation-mode: bicubic;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
 }
 
 /* Main product image layered over background */
@@ -2706,6 +2711,6 @@ a {
 
 
 /* 3D Scroll Optimizations */
-.hero-bg-scene, .grid-image-column, .house-aesthetic-img, .skincare-product-img, .haircare-product-img, .cosmetic-card { will-change: transform; }
+.grid-image-column, .house-aesthetic-img, .skincare-product-img, .haircare-product-img, .cosmetic-card { will-change: transform; }
 .hero-video-wrapper, .house-aesthetic-image-wrap { overflow: hidden; }
 

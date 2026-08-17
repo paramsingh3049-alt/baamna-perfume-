@@ -206,21 +206,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         gsap.ticker.lagSmoothing(0);
 
-        // 1. Hero Section Parallax (Zoom out & fade down slightly)
+        // 1. Hero Section — no parallax on background image to keep it crisp & sharp
+        // The hero image is intentionally kept static for maximum visual quality.
         const heroBg = document.querySelector('.hero-bg-scene');
-        if (heroBg) {
-            gsap.to(heroBg, {
-                yPercent: 15,
-                scale: 1, // zooms out slightly
-                ease: 'none',
-                scrollTrigger: {
-                    trigger: '.hero-section',
-                    start: 'top top',
-                    end: 'bottom top',
-                    scrub: true
-                }
-            });
-        }
+        // (Hero parallax intentionally disabled to prevent sub-pixel blur on the image)
 
         // 2. Parallax Background Images (Origin, Ingredients)
         const bgColumns = document.querySelectorAll('.grid-image-column');
