@@ -388,9 +388,8 @@ a {
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 0;
-    filter: brightness(0.75);
-    transform: scale(1.0);
+    z-index: 1;
+    filter: none;
 }
 
 /* Main product image layered over background */
