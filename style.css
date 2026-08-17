@@ -2155,6 +2155,49 @@ a {
         min-height: unset;
     }
 
+    /* House section — stack vertically on mobile */
+    .house-section .section-grid {
+        flex-direction: column !important;
+        padding: 0 !important;
+        min-height: unset !important;
+        align-items: stretch !important;
+    }
+
+    .house-image-column {
+        flex: none !important;
+        width: 100% !important;
+        min-height: unset !important;
+        height: 75vw !important;
+        max-height: 420px;
+    }
+
+    .house-aesthetic-image-wrap {
+        height: 100% !important;
+        min-height: unset !important;
+    }
+
+    .house-aesthetic-img {
+        object-position: center center !important;
+    }
+
+    .house-section .grid-content-column {
+        flex: none !important;
+        width: 100% !important;
+        padding: 3rem 1.4rem !important;
+        align-self: auto !important;
+    }
+
+    .house-section .section-label,
+    .house-section .section-title,
+    .house-section .section-lead {
+        text-align: center !important;
+        margin: 0 auto 1.5rem !important;
+    }
+
+    .house-section .grid-content-column .content-subblock {
+        text-align: center !important;
+    }
+
     .grid-reverse {
         flex-direction: column;
     }
@@ -2476,24 +2519,22 @@ a {
         font-size: 0.8rem;
     }
 
-    /* Section content */
+    /* Section content — small phones */
     .grid-image-column {
-        height: 250px;
+        height: 220px;
     }
 
-    .grid-content-column {
-        padding: 2.5rem 1rem;
+    /* House section overrides for small phones */
+    .house-image-column {
+        height: 65vw !important;
+        max-height: 320px !important;
     }
 
-    .section-title {
-        font-size: 1.65rem;
+    .house-section .grid-content-column {
+        padding: 2rem 1rem !important;
     }
 
     .house-section .section-title {
-        font-size: 1.2rem;
-    }
-
-    .ingredients-section .section-title {
         font-size: 1.2rem;
     }
 
