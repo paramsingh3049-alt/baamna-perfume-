@@ -1106,7 +1106,7 @@ a {
 @media (max-width: 1024px) {
     .carousel-item    { width: 320px; }
     .carousel-img-box { height: 220px; }
-    .carousel-track   { gap: 1.6rem; animation-duration: 28s; }
+    .carousel-track   { gap: 1.6rem; animation-duration: 26.8s; }
     .carousel-fade    { width: 90px; }
 }
 
@@ -1193,7 +1193,7 @@ a {
 .cosmetics-scroller-track {
     display: flex;
     width: calc(250px * 16 + 3rem * 16); /* 16 items (8 original + 8 duplicates) */
-    animation: scrollRotate 40s linear infinite;
+    animation: scrollRotate 26.45s linear infinite;
     gap: 3rem;
 }
 
@@ -2177,7 +2177,7 @@ a {
     }
 
     .house-aesthetic-img {
-        object-position: center center !important;
+        object-position: center 30% !important;
     }
 
     .house-section .grid-content-column {
@@ -2206,6 +2206,9 @@ a {
         height: 420px;         /* tall enough to show the full product shot */
         flex: none;
         width: 100%;
+        background-size: contain !important;
+        background-repeat: no-repeat !important;
+        background-position: center !important;
     }
 
     .house-bottle-img {
@@ -2288,7 +2291,7 @@ a {
     .cosmetics-scroller-track {
         width: calc(175px * 16 + 2rem * 16);
         gap: 2rem;
-        animation: scrollRotateMobile 35s linear infinite;
+        animation: scrollRotateMobile 20s linear infinite;
     }
 
     @keyframes scrollRotateMobile {
@@ -2556,7 +2559,7 @@ a {
     .cosmetics-scroller-track {
         width: calc(145px * 16 + 1.5rem * 16);
         gap: 1.5rem;
-        animation: scrollRotateSmall 30s linear infinite;
+        animation: scrollRotateSmall 16.8s linear infinite;
     }
 
     @keyframes scrollRotateSmall {
