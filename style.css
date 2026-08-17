@@ -664,30 +664,36 @@ a {
     justify-content: center;
 }
 
-/* House section — side-by-side: portrait image LEFT, text RIGHT */
+/* House section — side-by-side: SQUARE image LEFT, text RIGHT */
 .house-section .section-grid {
     flex-direction: row;
-    align-items: stretch;
+    align-items: center;       /* vertically center the square beside the text */
     min-height: 90vh;
+    gap: 0;
+    padding: 5rem 5% 5rem 5%;
+    background: var(--bg-obsidian);
 }
 
-/* Left image column — portrait width */
+/* Left image column — square container */
 .house-image-column {
-    flex: 0 0 42%;
-    width: 42%;
+    flex: 0 0 auto;
+    width: min(42vw, 520px);   /* responsive square side */
+    aspect-ratio: 1 / 1;       /* enforce perfect square */
     padding: 0;
     background: #050505;
     overflow: hidden;
     display: flex;
     align-items: stretch;
     position: relative;
-    min-height: 90vh;
+    border-radius: 4px;
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.70),
+                0 0 0 1px rgba(197, 165, 120, 0.08);
 }
 
 /* Right text column */
 .house-section .grid-content-column {
     flex: 1;
-    padding: 5rem 6% 5rem 5%;
+    padding: 0 5% 0 6%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -2597,8 +2603,7 @@ a {
 .house-aesthetic-image-wrap {
     position: relative;
     width: 100%;
-    height: 100%;
-    min-height: 90vh;
+    height: 100%;              /* fills the square column */
     overflow: hidden;
 }
 
@@ -2633,17 +2638,18 @@ a {
 @media (max-width: 900px) {
     .house-section .section-grid {
         flex-direction: column;
+        padding: 3rem 6%;
+        gap: 2.5rem;
     }
     .house-image-column {
-        flex: none;
-        width: 100%;
-        min-height: 55vw;
+        width: min(80vw, 420px);
+        align-self: center;
     }
     .house-aesthetic-image-wrap {
-        min-height: 55vw;
+        height: 100%;
     }
     .house-section .grid-content-column {
-        padding: 3rem 6%;
+        padding: 0;
     }
     .house-section .section-label,
     .house-section .section-title,
