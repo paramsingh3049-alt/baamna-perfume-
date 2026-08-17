@@ -372,7 +372,7 @@ a {
     text-align: center;
     padding: 8rem 0 4rem;
     overflow: hidden;
-    min-height: 100vh;
+    min-height: 60vh;
 }
 
 .hero-video-wrapper {
@@ -2120,8 +2120,8 @@ a {
 
     /* Hero */
     .hero-section {
-        min-height: 100svh;
-        min-height: 100vh;
+        min-height: 60svh;
+        min-height: 60vh;
         padding: 8rem 1.2rem 4rem;
     }
 
@@ -2505,8 +2505,8 @@ a {
     /* Hero */
     .hero-section {
         padding: 7.5rem 1rem 4rem;
-        min-height: 100svh;
-        min-height: 100vh;
+        min-height: 60svh;
+        min-height: 60vh;
     }
 
     .hero-logo-main {
