@@ -2029,6 +2029,13 @@ a {
         height: auto; /* Fix huge blank space */
         padding: 8rem 1.2rem 4rem;
     }
+    .hero-bg-scene {
+        aspect-ratio: 9 / 16;
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+        object-position: center;
+    }
     .hero-logo-main { height: 110px; max-width: 90vw; }
     .hero-title { font-size: 1.5rem; word-break: break-word; }
     .hero-title .accent-text { font-size: 1.2rem; }
