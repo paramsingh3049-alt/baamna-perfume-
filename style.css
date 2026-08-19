@@ -1105,34 +1105,7 @@ a {
     line-height: 1;
 }
 
-/* ── Tablet (≤1024px) ── */
-@media (max-width: 1024px) {
-    .carousel-item    { width: 320px; }
-    .carousel-img-box { height: 220px; }
-    .carousel-track   { gap: 1.6rem; animation-duration: 26.8s; }
-    .carousel-fade    { width: 90px; }
-}
-
-/* ── Mobile (≤768px) ── */
-@media (max-width: 768px) {
-    .perfume-carousel-section { padding: 5rem 0 4rem; }
-    .carousel-title            { font-size: 1.8rem; }
-    .carousel-item             { width: 240px; }
-    .carousel-img-box          { height: 170px; }
-    .carousel-perfume-name     { font-size: 0.9rem; }
-    .carousel-track            { gap: 1.2rem; animation-duration: 22s; }
-    .carousel-fade             { width: 55px; }
-}
-
-/* ── Small mobile (≤480px) ── */
-@media (max-width: 480px) {
-    .carousel-item    { width: 190px; }
-    .carousel-img-box { height: 135px; }
-    .carousel-track   { gap: 1rem; animation-duration: 18s; }
-    .carousel-fade    { width: 36px; }
-    .carousel-perfume-name { font-size: 0.82rem; }
-    .carousel-caption { padding: 0.9rem 0.8rem 1rem; }
-}
+/* Media queries removed in favor of fluid global scaling at bottom of file */
 
 /* Cosmetics Section */
 .cosmetics-section {
@@ -2004,12 +1977,14 @@ a {
 .house-scroller-item { max-height: 43.75rem; border-radius: 0.25rem; }
 .cosmetics-scroller-container::before,
 .cosmetics-scroller-container::after { width: 9.375rem; }
+.cosmetics-scroller-track { width: calc(15.625rem * 16 + 3rem * 16); }
 .cosmetics-scroller-item { width: 15.625rem; }
 .cosmetics-scroller-item img { width: 12.5rem; height: 12.5rem; }
 .cosmetic-card { width: 23.75rem; height: 16.25rem; }
 .carousel-item { width: 23.75rem; }
 .carousel-img-box { height: 16.25rem; }
-.carousel-fade { width: 5.625rem; }
+.carousel-fade { width: 8.75rem; }
+.country-code-select-container { width: 5.625rem; min-width: 5.625rem; }
 
 /* 2. Global Fluid Typography Scaling 
    Matches the desktop visual hierarchy exactly by linearly scaling down the root rem value 
