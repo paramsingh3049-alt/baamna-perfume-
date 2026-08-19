@@ -1987,85 +1987,45 @@ a {
 }
 
 /* ============================================================
-   RESPONSIVE DESIGN — TABLET & MOBILE OPTIMISATION
+   RESPONSIVE DESIGN — FLUID SCALING ADAPTATION
    ============================================================ */
 
-/* ---------- Tablet (≤1024px) ---------- */
-@media (max-width: 1024px) {
-    .container {
-        padding: 0 2.5rem;
-    }
+/* 1. Convert structural pixel dimensions to rem so they scale automatically */
+.container { max-width: 87.5rem; }
+.header-container { max-width: 100rem; }
+.header-logo-img { height: 5.625rem; max-width: 12.5rem; }
+.hero-content { max-width: 62.5rem; }
+.hero-logo-main { height: 10.9375rem; }
+.hero-intro-text { max-width: 43.75rem; }
+.scroll-dot { width: 0.125rem; height: 2.5rem; }
+.scroll-dot::after { height: 0.9375rem; }
+.statement-container { max-width: 56.25rem; }
+.statement-body { max-width: 43.75rem; }
+.house-scroller-item { max-height: 43.75rem; border-radius: 0.25rem; }
+.cosmetics-scroller-container::before,
+.cosmetics-scroller-container::after { width: 9.375rem; }
+.cosmetics-scroller-item { width: 15.625rem; }
+.cosmetics-scroller-item img { width: 12.5rem; height: 12.5rem; }
+.cosmetic-card { width: 23.75rem; height: 16.25rem; }
+.carousel-item { width: 23.75rem; }
+.carousel-img-box { height: 16.25rem; }
+.carousel-fade { width: 5.625rem; }
 
-    .header-container {
-        padding: 0.8rem 2.5rem;
-    }
-
-    .grid-2, .grid-3, .haircare-showcase-grid, .skincare-showcase-grid {
-        grid-template-columns: 1fr;
-        gap: 3rem;
-    }
-
-    .section-grid {
-        min-height: 680px;
-    }
-
-    .grid-content-column {
-        padding: 5rem 3rem;
-    }
-
-    .archive-grid {
-        grid-template-columns: 1fr;
-        gap: 4rem;
-    }
-
-    .footer-top-grid {
-        flex-direction: column;
-        gap: 3rem;
-    }
-
-    .cosmetics-section .section-header-centered .section-title {
-        font-size: 3.5rem;
-    }
-
-    .skincare-showcase-container,
-    .haircare-showcase-container {
-        padding: 2.5rem;
-    }
-
-    .baamann-enquiry-form {
-        padding: 3rem;
-    }
-
-    .access-content-wrapper {
-        padding: 0 2.5rem;
+/* 2. Global Fluid Typography Scaling 
+   Matches the desktop visual hierarchy exactly by linearly scaling down the root rem value 
+   based on the screen width. */
+@media (max-width: 1400px) {
+    html {
+        font-size: calc(100vw / 1400 * 16);
     }
 }
 
-/* ---------- Mobile (≤768px) ---------- */
+/* 3. Mobile Navigation Override 
+   A fluid nav at 375px would have links too small to tap. 
+   We preserve the hamburger menu strictly for interaction usability. */
 @media (max-width: 768px) {
-    /* Base */
-    html { font-size: 15px; }
-
-    * { max-width: 100%; }
-
-    .container {
-        padding: 0 1.2rem;
-    }
-
-    /* Header */
-    .site-header {
-        padding: 0;
-    }
-
-    .header-container {
-        padding: 0.7rem 1.2rem;
-        min-height: 70px;
-    }
-
-    .header-logo-img {
-        height: 60px;
-    }
-
+    .header-container { padding: 1.5rem 2rem; }
+    
     .mobile-nav-toggle {
         display: flex;
         padding: 10px;
@@ -2100,543 +2060,18 @@ a {
     }
 
     .nav-link {
-        font-size: 1rem;
+        font-size: 1.5rem; /* Large enough to read/tap inside the mobile menu */
         letter-spacing: 0.18em;
         display: block;
-        padding: 0.5rem 1rem;
+        padding: 1rem 2rem;
     }
 
     .header-action .btn-nav-cta {
-        display: none;
+        display: none; /* Hide to prevent crowding header bar */
     }
-
-    /* Hero */
+    
     .hero-section {
         min-height: 100svh;
-        min-height: 100vh;
-        padding: 8rem 1.2rem 4rem;
-    }
-
-    .hero-logo-main {
-        height: 110px;
-    }
-
-    .hero-title {
-        font-size: 1.5rem;
-        word-break: break-word;
-    }
-
-    .hero-title .accent-text {
-        font-size: 1.2rem;
-    }
-
-    .hero-tagline-sub {
-        font-size: 0.6rem;
-        letter-spacing: 0.35em;
-    }
-
-    .scroll-indicator {
-        bottom: 1.5rem;
-    }
-
-    /* Statement */
-    .statement-section {
-        padding: 5rem 1.2rem;
-    }
-
-    .brand-blockquote {
-        font-size: 1.1rem;
-    }
-
-    .statement-body {
-        font-size: 0.95rem;
-    }
-
-    /* House / Origin / Ingredients sections */
-    .section-grid {
-        flex-direction: column;
-        min-height: unset;
-    }
-
-    /* House section — stack vertically on mobile */
-    .house-section .section-grid {
-        flex-direction: column !important;
-        padding: 0 !important;
-        min-height: unset !important;
-        align-items: stretch !important;
-    }
-
-    .house-image-column {
-        flex: none !important;
-        width: 100% !important;
-        min-height: unset !important;
-        height: 75vw !important;
-        max-height: 420px;
-    }
-
-    .house-aesthetic-image-wrap {
-        height: 100% !important;
-        min-height: unset !important;
-    }
-
-    .house-aesthetic-img {
-        object-position: center 30% !important;
-    }
-
-    .house-section .grid-content-column {
-        flex: none !important;
-        width: 100% !important;
-        padding: 3rem 1.4rem !important;
-        align-self: auto !important;
-    }
-
-    .house-section .section-label,
-    .house-section .section-title,
-    .house-section .section-lead {
-        text-align: center !important;
-        margin: 0 auto 1.5rem !important;
-    }
-
-    .house-section .grid-content-column .content-subblock {
-        text-align: center !important;
-    }
-
-    .grid-reverse {
-        flex-direction: column;
-    }
-
-    .grid-image-column {
-        height: 420px;         /* tall enough to show the full product shot */
-        flex: none;
-        width: 100%;
-        background-size: contain !important;
-        background-repeat: no-repeat !important;
-        background-position: center !important;
-    }
-
-    .house-bottle-img {
-        width: 100%;
-        height: 480px;
-        min-height: 480px;
-        object-fit: contain;
-        object-position: center center;
-        background: #050505;
-    }
-
-    .grid-content-column {
-        padding: 3rem 1.2rem;
-        flex: none;
-        width: 100%;
-    }
-
-    .section-title {
-        font-size: 1.9rem;
-    }
-
-    .house-section .section-title {
-        font-size: 1.45rem;
-    }
-
-    .ingredients-section .section-title {
-        font-size: 1.45rem;
-    }
-
-    .section-lead {
-        font-size: 1rem;
-    }
-
-    .content-subblock h3 {
-        font-size: 1.15rem;
-    }
-
-    .materials-cloud {
-        font-size: 1.2rem;
-        gap: 0.8rem 1rem;
-    }
-
-    /* Cosmetics Section */
-    .cosmetics-section {
-        padding: 5rem 0;
-    }
-
-    .cosmetics-section .section-header-centered .section-label {
-        font-size: 1.6rem;
-    }
-
-    .cosmetics-section .section-header-centered .section-title {
-        font-size: 2.4rem;
-    }
-
-    .cosmetics-section .section-header-centered .section-lead {
-        font-size: 1rem;
-    }
-
-    .cosmetics-scroller-container {
-        padding: 2rem 0;
-        margin: 1.5rem 0 3rem 0;
-    }
-
-    .cosmetics-scroller-container::before,
-    .cosmetics-scroller-container::after {
-        width: 50px;
-    }
-
-    .cosmetics-scroller-item {
-        width: 175px;
-        padding: 1.5rem 1rem;
-    }
-
-    .cosmetics-scroller-item img {
-        width: 135px;
-        height: 135px;
-    }
-
-    .cosmetics-scroller-track {
-        width: calc(175px * 16 + 2rem * 16);
-        gap: 2rem;
-        animation: scrollRotateMobile 20s linear infinite;
-    }
-
-    @keyframes scrollRotateMobile {
-        0%   { transform: translateX(0); }
-        100% { transform: translateX(calc(-175px * 8 - 2rem * 8)); }
-    }
-
-    .cosmetics-intro-block {
-        padding: 2rem 1.2rem;
-        margin-bottom: 3rem;
-    }
-
-    .cosmetics-brand-text {
-        font-size: 0.95rem;
-    }
-
-    /* Skincare / Haircare Showcases */
-    .skincare-showcase-container,
-    .haircare-showcase-container {
-        padding: 1.2rem;
-    }
-
-    .skincare-showcase-grid,
-    .haircare-showcase-grid {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-    }
-
-    .skincare-image-wrap,
-    .haircare-image-wrap {
-        min-height: 260px;
-        padding: 1rem;
-    }
-
-    .skincare-product-img,
-    .haircare-product-img {
-        max-height: 260px;
-    }
-
-    .skincare-cards-wrap {
-        padding: 0;
-    }
-
-    .cosmetics-grid.grid-1 {
-        grid-template-columns: 1fr;
-        gap: 1.2rem;
-    }
-
-    .cosmetic-card {
-        padding: 1.8rem 1.2rem;
-    }
-
-    .cosmetics-highlights-grid.grid-2 {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-        margin-top: 3rem;
-    }
-
-    .highlight-card {
-        padding: 2rem 1.2rem;
-    }
-
-    .promise-quote {
-        font-size: 1.1rem;
-    }
-
-    .collection-header {
-        margin-bottom: 2rem;
-    }
-
-    .collection-header .collection-title {
-        font-size: 1.7rem;
-    }
-
-    /* Private Access / Form */
-    .private-access-section {
-        padding: 5rem 0;
-    }
-
-    .access-content-wrapper {
-        padding: 0 1.2rem;
-        gap: 2rem;
-    }
-
-    .access-content-wrapper.grid-2 {
-        grid-template-columns: 1fr;
-    }
-
-    .enquiry-info-column {
-        gap: 2rem;
-    }
-
-    .enquiry-intro {
-        font-size: 0.95rem;
-    }
-
-    .baamann-enquiry-form {
-        padding: 1.8rem 1.2rem;
-    }
-
-    .form-row.grid-2 {
-        grid-template-columns: 1fr;
-        gap: 0;
-    }
-
-    .phone-input-wrapper {
-        flex-direction: row;
-        gap: 0.5rem;
-    }
-
-    .country-code-select-container {
-        width: 90px;
-        min-width: 90px;
-    }
-
-    .form-group input,
-    .form-group textarea,
-    .form-group select {
-        font-size: 16px; /* Prevents iOS auto-zoom */
-        padding: 0.9rem 1rem;
-    }
-
-    .btn-submit {
-        padding: 1.1rem;
-        font-size: 0.8rem;
-        min-height: 48px;
-        letter-spacing: 0.15em;
-    }
-
-    /* Footer */
-    .site-footer {
-        padding: 4rem 0 2rem 0;
-    }
-
-    .footer-top-grid {
-        flex-direction: column;
-        gap: 2rem;
-        padding: 0 1.2rem;
-    }
-
-    .footer-brand-info {
-        max-width: 100%;
-    }
-
-    .footer-tag {
-        font-size: 1.4rem;
-    }
-
-    .footer-bottom {
-        flex-direction: column;
-        gap: 1rem;
-        text-align: center;
-        padding: 2rem 1.2rem 0 1.2rem;
-    }
-
-    /* Section borders */
-    .house-section,
-    .origin-section,
-    .ingredients-section {
-        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-    }
-
-    /* Ensure images never overflow */
-    img {
-        max-width: 100%;
-        height: auto;
-    }
-
-    /* Fix provenance text */
-    .provenance-statement {
-        padding-left: 1rem;
-        font-size: 0.9rem;
-    }
-
-    /* Investment block */
-    .investment-price {
-        font-size: 0.8rem;
-        letter-spacing: 0.1em;
-        word-break: break-word;
-    }
-}
-
-/* ---------- Small Phones (≤480px) ---------- */
-@media (max-width: 480px) {
-    html { font-size: 14px; }
-
-    .container {
-        padding: 0 1rem;
-    }
-
-    .header-container {
-        padding: 0.7rem 1rem;
-        min-height: 65px;
-    }
-
-    .header-logo-img {
-        height: 52px;
-    }
-
-    /* Hero */
-    .hero-section {
-        padding: 7.5rem 1rem 4rem;
-        min-height: 100svh;
-        min-height: 100vh;
-    }
-
-    .hero-logo-main {
-        height: 85px;
-    }
-
-    .hero-title {
-        font-size: 1.25rem;
-        word-break: break-word;
-    }
-
-    .hero-cta-wrapper .btn {
-        font-size: 0.72rem;
-        padding: 0.9rem 1.4rem;
-        letter-spacing: 0.15em;
-    }
-
-    /* Statement */
-    .statement-section {
-        padding: 4rem 1rem;
-    }
-
-    .brand-blockquote {
-        font-size: 0.8rem;
-    }
-
-    /* Section content — small phones */
-    .grid-image-column {
-        height: 220px;
-    }
-
-    /* House section overrides for small phones */
-    .house-image-column {
-        height: 65vw !important;
-        max-height: 320px !important;
-    }
-
-    .house-section .grid-content-column {
-        padding: 2rem 1rem !important;
-    }
-
-    .house-section .section-title {
-        font-size: 1.2rem;
-    }
-
-    /* Cosmetics */
-    .cosmetics-section .section-header-centered .section-title {
-        font-size: 1.9rem;
-    }
-
-    .cosmetics-scroller-item {
-        width: 145px;
-        padding: 1.2rem 0.8rem;
-    }
-
-    .cosmetics-scroller-item img {
-        width: 110px;
-        height: 110px;
-    }
-
-    .cosmetics-scroller-track {
-        width: calc(145px * 16 + 1.5rem * 16);
-        gap: 1.5rem;
-        animation: scrollRotateSmall 16.8s linear infinite;
-    }
-
-    @keyframes scrollRotateSmall {
-        0%   { transform: translateX(0); }
-        100% { transform: translateX(calc(-145px * 8 - 1.5rem * 8)); }
-    }
-
-    .cosmetics-scroller-container::before,
-    .cosmetics-scroller-container::after {
-        width: 35px;
-    }
-
-    .skincare-image-wrap,
-    .haircare-image-wrap {
-        min-height: 200px;
-    }
-
-    .skincare-product-img,
-    .haircare-product-img {
-        max-height: 200px;
-    }
-
-    .cosmetic-card {
-        padding: 1.5rem 1rem;
-    }
-
-    .cosmetic-card .cosmetic-title {
-        font-size: 1.2rem;
-    }
-
-    /* Form */
-    .baamann-enquiry-form {
-        padding: 1.5rem 1rem;
-    }
-
-    .phone-input-wrapper {
-        flex-direction: column;
-        gap: 0.5rem;
-    }
-
-    .country-code-select-container {
-        width: 100%;
-    }
-
-    /* Footer */
-    .footer-top-grid {
-        padding: 0 1rem;
-    }
-
-    .footer-bottom {
-        padding: 1.5rem 1rem 0 1rem;
-    }
-
-    /* Materials */
-    .materials-cloud {
-        font-size: 1rem;
-        gap: 0.6rem 0.8rem;
-    }
-
-    /* Promise & Why boxes */
-    .highlight-card {
-        padding: 1.8rem 1rem;
-    }
-
-    .section-header-centered {
-        padding: 0 1rem;
-    }
-
-    .collection-header {
-        padding: 0 1rem;
-    }
-
-    .cosmetics-intro-block {
-        padding: 1.5rem 1rem;
     }
 }
 
@@ -2679,35 +2114,6 @@ a {
     pointer-events: none;
     z-index: 1;
 }
-
-/* ── Responsive: stack vertically on smaller screens ── */
-@media (max-width: 900px) {
-    .house-section .section-grid {
-        flex-direction: column;
-        padding: 0;
-    }
-    .house-image-column {
-        flex: none;
-        width: 100%;
-        min-height: 75vw;
-    }
-    .house-aesthetic-image-wrap {
-        min-height: 75vw;
-    }
-    .house-section .grid-content-column {
-        padding: 3rem 6%;
-    }
-    .house-section .section-label,
-    .house-section .section-title,
-    .house-section .section-lead {
-        text-align: center;
-        margin: 0 auto 2rem;
-    }
-    .house-section .grid-content-column .content-subblock {
-        text-align: center;
-    }
-}
-
 
 /* 3D Scroll Optimizations */
 .grid-image-column, .house-aesthetic-img, .skincare-product-img, .haircare-product-img, .cosmetic-card { will-change: transform; }
