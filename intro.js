@@ -1,343 +1,434 @@
 /*!
- * BAAMANN — Cinematic Perfume Intro Animation  |  intro.js
- * ADD-ON ONLY — injects a full-screen intro overlay, plays once per session.
- * Zero changes to existing site HTML, CSS, or JavaScript.
+ * BAAMANN — Luxury Perfume Mist Intro  |  intro.js
+ * ADD-ON ONLY — pure add-on opening animation.
+ * Zero changes to any existing site content, layout, or functionality.
  */
 (function () {
     'use strict';
 
-    /* ── 1. Session guard ──────────────────────────────────────────── */
-    const SESSION_KEY = 'baamann_intro_shown';
-    if (sessionStorage.getItem(SESSION_KEY)) return;
+    /* ── 1. Session Guard (Play once per session) ──────────────────── */
+    const SESSION_KEY = 'baamann_intro_seen';
+    if (sessionStorage.getItem(SESSION_KEY)) {
+        return;
+    }
     sessionStorage.setItem(SESSION_KEY, '1');
 
-    /* ── 2. Config ─────────────────────────────────────────────────── */
-    const CFG = {
-        bottleImg:       'images/baamann_bottle_only.jpg',
-        logoImg:         'images/logo_transparent.png',
-        // Timing (ms)
-        bottleDelay:     200,   // bottle appears
-        sweepDelay:      900,   // light sweep starts
-        sprayDelay:      1300,  // particles begin
-        logoDelay:       2400,  // logo fades in
-        taglineDelay:    2700,  // tagline appears
-        exitDelay:       3500,  // overlay begins exit
-        removeDelay:     4500,  // overlay removed from DOM
-        progressDur:     3500,  // progress bar fills over this duration
-        // Particles
-        PARTICLE_COUNT:  260,
-        PARTICLE_WAVES:  6,     // staggered bursts
-    };
+    /* ── 2. Synthesize Luxury Perfume Spray Audio (Web Audio API) ─── */
+    function playLuxurySpraySound() {
+        try {
+            const AudioCtx = window.AudioContext || window.webkitAudioContext;
+            if (!AudioCtx) return;
+            const ctx = new AudioCtx();
+            if (ctx.state === 'suspended') {
+                ctx.resume();
+            }
 
-    /* ── 3. Build overlay DOM ──────────────────────────────────────── */
+            const bufferSize = ctx.sampleRate * 0.95; // ~950ms spray duration
+            const noiseBuffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+            const output = noiseBuffer.getChannelData(0);
+
+            // Generate colored noise (pink/whisper spectrum for fine mist)
+            let b0 = 0, b1 = 0, b2 = 0;
+            for (let i = 0; i < bufferSize; i++) {
+                const white = Math.random() * 2 - 1;
+                b0 = 0.99 * b0 + white * 0.05;
+                b1 = 0.95 * b1 + white * 0.1;
+                b2 = 0.85 * b2 + white * 0.2;
+                output[i] = (b0 + b1 + b2 + white * 0.3) * 0.4;
+            }
+
+            const noiseSource = ctx.createBufferSource();
+            noiseSource.buffer = noiseBuffer;
+
+            // Bandpass filter for realistic aerosol atomization sound
+            const bandpass = ctx.createBiquadFilter();
+            bandpass.type = 'bandpass';
+            bandpass.frequency.setValueAtTime(3200, ctx.currentTime);
+            bandpass.Q.setValueAtTime(1.2, ctx.currentTime);
+            bandpass.frequency.exponentialRampToValueAtTime(1800, ctx.currentTime + 0.8);
+
+            // Highpass for silky airy hiss
+            const highpass = ctx.createBiquadFilter();
+            highpass.type = 'highpass';
+            highpass.frequency.setValueAtTime(1600, ctx.currentTime);
+
+            // Gain envelope for soft realistic pressure burst and dissipation
+            const gainNode = ctx.createGain();
+            gainNode.gain.setValueAtTime(0.001, ctx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.28, ctx.currentTime + 0.06); // fast soft attack
+            gainNode.gain.exponentialRampToValueAtTime(0.18, ctx.currentTime + 0.25); // sustained release
+            gainNode.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.9); // smooth tail
+
+            noiseSource.connect(bandpass);
+            bandpass.connect(highpass);
+            highpass.connect(gainNode);
+            gainNode.connect(ctx.destination);
+
+            noiseSource.start();
+        } catch (e) {
+            // Audio policy fallback - silent run without interrupting animation
+        }
+    }
+
+    /* ── 3. Build & Inject Intro Overlay DOM ────────────────────────── */
     const overlay = document.createElement('div');
     overlay.id = 'baamann-intro';
     overlay.setAttribute('role', 'dialog');
-    overlay.setAttribute('aria-label', 'BAAMANN Intro');
+    overlay.setAttribute('aria-label', 'Intro Animation');
 
     overlay.innerHTML = `
+        <div id="intro-ambient"></div>
         <canvas id="intro-canvas"></canvas>
 
-        <!-- Ambient orbs -->
-        <div class="intro-orb" style="
-            width:320px;height:320px;
-            top:12%;left:8%;
-            background:radial-gradient(circle,rgba(197,165,120,0.055) 0%,transparent 70%);
-            --orb-opacity:0.7;
-            animation-duration:7s;animation-delay:-2s;
-        "></div>
-        <div class="intro-orb" style="
-            width:260px;height:260px;
-            bottom:14%;right:6%;
-            background:radial-gradient(circle,rgba(197,165,120,0.04) 0%,transparent 70%);
-            --orb-opacity:0.5;
-            animation-duration:9s;animation-delay:-5s;
-        "></div>
-
-        <div id="intro-bottle-wrap">
-            <div style="position:relative;display:inline-block;">
-                <div id="intro-light-sweep"></div>
-                <img id="intro-bottle-img"
-                     src="${CFG.bottleImg}"
-                     alt="BAAMANN Perfume"
-                     draggable="false"
-                >
+        <div id="intro-nozzle">
+            <div class="nz-btn"></div>
+            <div class="nz-barrel"></div>
+            <div class="nz-head">
+                <div class="nz-hole" id="intro-hole"></div>
             </div>
-            <img id="intro-brand-logo"
-                 src="${CFG.logoImg}"
-                 alt="BAAMANN"
-                 draggable="false"
-            >
-            <p id="intro-tagline">Private Fragrance Maison</p>
+            <div class="nz-collar"></div>
         </div>
 
-        <button id="intro-skip-btn" aria-label="Skip intro">Skip Intro</button>
-        <div id="intro-progress"></div>
+        <button id="intro-skip" aria-label="Skip Intro">Skip Intro</button>
     `;
 
-    /* Insert as the very first child of <body> */
     document.body.insertAdjacentElement('afterbegin', overlay);
 
-    /* Lock body scroll during intro */
-    const origOverflow = document.body.style.overflow;
+    // Lock page scrolling while intro plays
+    const originalOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
 
-    /* ── 4. Refs ───────────────────────────────────────────────────── */
-    const canvas      = document.getElementById('intro-canvas');
-    const ctx         = canvas.getContext('2d');
-    const bottleWrap  = document.getElementById('intro-bottle-wrap');
-    const bottleImg   = document.getElementById('intro-bottle-img');
-    const lightSweep  = document.getElementById('intro-light-sweep');
-    const logoEl      = document.getElementById('intro-brand-logo');
-    const taglineEl   = document.getElementById('intro-tagline');
-    const skipBtn     = document.getElementById('intro-skip-btn');
-    const progressBar = document.getElementById('intro-progress');
+    /* ── 4. Elements & Canvas Setup ────────────────────────────────── */
+    const canvas     = document.getElementById('intro-canvas');
+    const ctx        = canvas.getContext('2d');
+    const ambientEl  = document.getElementById('intro-ambient');
+    const nozzleEl   = document.getElementById('intro-nozzle');
+    const skipBtn    = document.getElementById('intro-skip');
 
-    /* ── 5. Canvas sizing ──────────────────────────────────────────── */
-    function resizeCanvas() {
-        canvas.width  = window.innerWidth;
-        canvas.height = window.innerHeight;
+    let width  = (canvas.width  = window.innerWidth);
+    let height = (canvas.height = window.innerHeight);
+
+    function onResize() {
+        width  = canvas.width  = window.innerWidth;
+        height = canvas.height = window.innerHeight;
     }
-    resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
+    window.addEventListener('resize', onResize);
 
-    /* ── 6. Particle system ────────────────────────────────────────── */
-    const particles = [];
-    let   rafId     = null;
-    let   sprayActive = false;
+    /* ── 5. Advanced Particle & Mist Simulation Engine ─────────────── */
+    const particles = [];      // 3D atomized droplets moving toward camera
+    const mistClouds = [];     // Soft expanding volumetric vapor clouds
+    const screenDrops = [];    // Droplets that hit and dissolve on screen
+    let rafId = null;
+    let isExiting = false;
 
-    /**
-     * Get the bottle nozzle position in screen coordinates.
-     * The nozzle is roughly at the top-right area of the bottle image.
-     */
-    function getNozzlePos() {
-        const rect = bottleImg.getBoundingClientRect();
+    // Center nozzle origin
+    function getNozzleCenter() {
         return {
-            x: rect.left + rect.width  * 0.72,  // nozzle ~72% from left
-            y: rect.top  + rect.height * 0.12,  // nozzle ~12% from top
+            x: width / 2,
+            y: height / 2 + (width < 600 ? -5 : 0)
         };
     }
 
-    function randomBetween(a, b) {
-        return a + Math.random() * (b - a);
-    }
+    // 1. Mist Cloud / Vapor Particle (Volumetric luxury mist)
+    class MistCloud {
+        constructor(originX, originY) {
+            this.x = originX + (Math.random() - 0.5) * 20;
+            this.y = originY + (Math.random() - 0.5) * 20;
+            const angle = Math.random() * Math.PI * 2;
+            const speed = 0.8 + Math.random() * 2.6;
+            this.vx = Math.cos(angle) * speed;
+            this.vy = Math.sin(angle) * speed * 0.75 - 0.3; // subtle upward drift
+            this.radius = 18 + Math.random() * 32;
+            this.growth = 1.4 + Math.random() * 1.8;
+            this.maxRadius = 260 + Math.random() * 280;
+            this.opacity = 0.09 + Math.random() * 0.12;
+            this.decay = 0.00075 + Math.random() * 0.0009;
+            this.hue = Math.random() > 0.4 ? '232, 218, 195' : '245, 242, 235'; // ivory gold tones
+        }
 
-    function createParticle(nozzle) {
-        // Spray angle: fan upward-right from the nozzle
-        const angle  = randomBetween(-Math.PI * 0.85, -Math.PI * 0.15);
-        const speed  = randomBetween(0.6, 3.2);
-        const size   = randomBetween(1.0, 4.0);
-        // Colour palette: ivory mist and champagne gold
-        const palette = [
-            `rgba(245,242,235,`,   // ivory
-            `rgba(220,200,165,`,   // champagne
-            `rgba(197,165,120,`,   // accent gold
-            `rgba(255,248,230,`,   // warm white
-            `rgba(180,160,130,`,   // muted bronze
-        ];
-        const col = palette[Math.floor(Math.random() * palette.length)];
+        update() {
+            this.x += this.vx;
+            this.y += this.vy;
+            this.vx *= 0.985;
+            this.vy *= 0.985;
+            if (this.radius < this.maxRadius) {
+                this.radius += this.growth;
+                this.growth *= 0.975;
+            }
+            this.opacity -= this.decay;
+        }
 
-        // Some particles float toward camera (grow + fade)
-        const isDepth = Math.random() < 0.12;
+        draw() {
+            if (this.opacity <= 0.002) return;
+            const grad = ctx.createRadialGradient(
+                this.x, this.y, 0,
+                this.x, this.y, this.radius
+            );
+            grad.addColorStop(0, `rgba(${this.hue}, ${this.opacity})`);
+            grad.addColorStop(0.45, `rgba(${this.hue}, ${this.opacity * 0.5})`);
+            grad.addColorStop(1, `rgba(${this.hue}, 0)`);
 
-        return {
-            x:       nozzle.x,
-            y:       nozzle.y,
-            vx:      Math.cos(angle) * speed,
-            vy:      Math.sin(angle) * speed,
-            size:    size,
-            opacity: randomBetween(0.3, 0.85),
-            decay:   randomBetween(0.004, 0.012),
-            col:     col,
-            gravity: randomBetween(-0.012, 0.018),  // slight float or drift
-            isDepth: isDepth,
-            scale:   1,
-            scaleV:  isDepth ? randomBetween(0.008, 0.022) : 0,
-            // Swirl/turbulence
-            angle:   angle,
-            wobble:  randomBetween(-0.04, 0.04),
-        };
-    }
-
-    function spawnWave(nozzle, count) {
-        for (let i = 0; i < count; i++) {
-            particles.push(createParticle(nozzle));
+            ctx.fillStyle = grad;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+            ctx.fill();
         }
     }
 
-    function drawParticles() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // 2. 3D Spray Droplet (Moves towards camera Z-axis)
+    class Droplet3D {
+        constructor(originX, originY) {
+            this.ox = originX;
+            this.oy = originY;
+            // 3D coordinates
+            this.x = (Math.random() - 0.5) * 35;
+            this.y = (Math.random() - 0.5) * 35;
+            this.z = 260 + Math.random() * 80; // Distance away from screen
+            
+            // Conical velocity outward toward viewer
+            const spreadAngle = Math.random() * Math.PI * 2;
+            const spreadVel = 0.4 + Math.random() * 2.2;
+            this.vx = Math.cos(spreadAngle) * spreadVel;
+            this.vy = Math.sin(spreadAngle) * spreadVel - 0.2;
+            this.vz = -(5.5 + Math.random() * 8.5); // Moves toward z=0 (the screen)
 
-        for (let i = particles.length - 1; i >= 0; i--) {
-            const p = particles[i];
+            this.baseSize = 0.8 + Math.random() * 1.6;
+            this.opacity = 0.6 + Math.random() * 0.4;
+            this.isScreenHitter = Math.random() < 0.18; // Chance to hit lens/screen
+        }
 
-            /* Update */
-            p.angle += p.wobble * 0.05;
-            p.vx += Math.cos(p.angle) * 0.008;
-            p.vy += p.gravity;
-            p.x  += p.vx;
-            p.y  += p.vy;
-            p.opacity -= p.decay;
-            p.scale   += p.scaleV;
-            // Slow down over time (air resistance feel)
-            p.vx *= 0.995;
-            p.vy *= 0.995;
+        update() {
+            this.x += this.vx;
+            this.y += this.vy;
+            this.z += this.vz;
 
-            if (p.opacity <= 0) {
-                particles.splice(i, 1);
-                continue;
+            // Check if droplet hits the screen
+            if (this.z <= 12) {
+                if (this.isScreenHitter) {
+                    // Create screen condensation droplet
+                    const fov = 320;
+                    const scale = fov / Math.max(12, this.z);
+                    const screenX = this.ox + this.x * scale;
+                    const screenY = this.oy + this.y * scale;
+                    if (screenX >= 0 && screenX <= width && screenY >= 0 && screenY <= height) {
+                        screenDrops.push(new ScreenDrop(screenX, screenY, this.baseSize * (1.8 + Math.random() * 1.5)));
+                    }
+                }
+                return false; // Remove 3D particle
+            }
+            return true;
+        }
+
+        draw() {
+            if (this.z <= 15) return;
+            const fov = 320;
+            const scale = fov / this.z;
+            const projX = this.ox + this.x * scale;
+            const projY = this.oy + this.y * scale;
+            const radius = Math.max(0.6, this.baseSize * scale * 0.42);
+
+            if (projX < -50 || projX > width + 50 || projY < -50 || projY > height + 50) {
+                return;
             }
 
-            /* Draw */
+            // Proximity glow
+            const alpha = Math.min(1, this.opacity * (scale * 0.18));
             ctx.save();
-            ctx.globalAlpha = Math.max(0, p.opacity);
+            ctx.globalAlpha = alpha;
 
-            const r = p.size * p.scale;
-
-            if (p.isDepth) {
-                /* Glowing depth droplet */
-                const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, r * 3);
-                grad.addColorStop(0,   p.col + '0.9)');
-                grad.addColorStop(0.4, p.col + '0.4)');
-                grad.addColorStop(1,   p.col + '0)');
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, r * 3, 0, Math.PI * 2);
+            if (scale > 1.8) {
+                // Large droplet near camera: glowing soft orb
+                const grad = ctx.createRadialGradient(projX, projY, 0, projX, projY, radius * 2.2);
+                grad.addColorStop(0, 'rgba(255, 252, 245, 0.95)');
+                grad.addColorStop(0.35, 'rgba(225, 205, 170, 0.45)');
+                grad.addColorStop(1, 'rgba(197, 165, 120, 0)');
                 ctx.fillStyle = grad;
+                ctx.beginPath();
+                ctx.arc(projX, projY, radius * 2.2, 0, Math.PI * 2);
                 ctx.fill();
             } else {
-                /* Fine mist droplet */
-                const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, r);
-                grad.addColorStop(0, p.col + Math.min(1, p.opacity + 0.15) + ')');
-                grad.addColorStop(1, p.col + '0)');
+                // Fine atomized particle
+                ctx.fillStyle = 'rgba(245, 235, 215, 0.85)';
                 ctx.beginPath();
-                ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
-                ctx.fillStyle = grad;
+                ctx.arc(projX, projY, radius, 0, Math.PI * 2);
                 ctx.fill();
             }
+            ctx.restore();
+        }
+    }
+
+    // 3. Screen Hit Droplet (Dew / condensation that gently dissolves on screen)
+    class ScreenDrop {
+        constructor(x, y, radius) {
+            this.x = x;
+            this.y = y;
+            this.radius = Math.max(2.5, radius);
+            this.maxRadius = this.radius * (1.15 + Math.random() * 0.2);
+            this.opacity = 0.7 + Math.random() * 0.25;
+            this.decay = 0.009 + Math.random() * 0.007;
+            this.drip = Math.random() < 0.25 ? 0.15 + Math.random() * 0.35 : 0; // slight luxury drip
+        }
+
+        update() {
+            this.y += this.drip;
+            this.opacity -= this.decay;
+            if (this.radius < this.maxRadius) {
+                this.radius += 0.08;
+            }
+        }
+
+        draw() {
+            if (this.opacity <= 0.01) return;
+            ctx.save();
+            ctx.globalAlpha = this.opacity;
+
+            // Glass condensation droplet with luxury refractive ring
+            const grad = ctx.createRadialGradient(
+                this.x - this.radius * 0.3,
+                this.y - this.radius * 0.3,
+                0,
+                this.x,
+                this.y,
+                this.radius
+            );
+            grad.addColorStop(0, 'rgba(255, 255, 255, 0.75)');
+            grad.addColorStop(0.5, 'rgba(220, 205, 180, 0.25)');
+            grad.addColorStop(0.85, 'rgba(197, 165, 120, 0.45)'); // delicate gold rim
+            grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+
+            ctx.fillStyle = grad;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Specular glint highlight
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
+            ctx.beginPath();
+            ctx.arc(this.x - this.radius * 0.35, this.y - this.radius * 0.35, this.radius * 0.22, 0, Math.PI * 2);
+            ctx.fill();
 
             ctx.restore();
         }
-
-        rafId = requestAnimationFrame(drawParticles);
     }
 
-    /* ── 7. Spray sequence — staggered waves ───────────────────────── */
-    let sprayTimers = [];
+    /* ── 6. Spray Burst Controller ──────────────────────────────────── */
+    function triggerSprayBlast() {
+        const origin = getNozzleCenter();
 
-    function startSpray() {
-        sprayActive = true;
-        drawParticles();  // start rAF loop
+        // 1. Burst of 3D droplets towards user (280 fine particles)
+        for (let i = 0; i < 280; i++) {
+            particles.push(new Droplet3D(origin.x, origin.y));
+        }
 
-        const perWave = Math.floor(CFG.PARTICLE_COUNT / CFG.PARTICLE_WAVES);
-
-        for (let w = 0; w < CFG.PARTICLE_WAVES; w++) {
-            const t = setTimeout(() => {
-                if (!sprayActive) return;
-                const nozzle = getNozzlePos();
-                spawnWave(nozzle, perWave);
-            }, w * 180);
-            sprayTimers.push(t);
+        // 2. Volumetric soft mist clouds spreading over screen (45 expanding clouds)
+        for (let i = 0; i < 45; i++) {
+            mistClouds.push(new MistCloud(origin.x, origin.y));
         }
     }
 
-    /* ── 8. Cleanup ────────────────────────────────────────────────── */
-    let allTimers = [];
+    /* ── 7. Render Loop ────────────────────────────────────────────── */
+    function loop() {
+        ctx.clearRect(0, 0, width, height);
 
-    function cleanup() {
-        sprayActive = false;
-        if (rafId) cancelAnimationFrame(rafId);
-        sprayTimers.forEach(clearTimeout);
-        allTimers.forEach(clearTimeout);
-        window.removeEventListener('resize', resizeCanvas);
+        // 1. Draw volumetric mist clouds
+        for (let i = mistClouds.length - 1; i >= 0; i--) {
+            const m = mistClouds[i];
+            m.update();
+            m.draw();
+            if (m.opacity <= 0.002) {
+                mistClouds.splice(i, 1);
+            }
+        }
+
+        // 2. Draw 3D forward traveling droplets
+        for (let i = particles.length - 1; i >= 0; i--) {
+            const p = particles[i];
+            const active = p.update();
+            if (active) {
+                p.draw();
+            } else {
+                particles.splice(i, 1);
+            }
+        }
+
+        // 3. Draw screen condensation droplets
+        for (let i = screenDrops.length - 1; i >= 0; i--) {
+            const s = screenDrops[i];
+            s.update();
+            s.draw();
+            if (s.opacity <= 0.01) {
+                screenDrops.splice(i, 1);
+            }
+        }
+
+        if (!isExiting || mistClouds.length > 0 || particles.length > 0 || screenDrops.length > 0) {
+            rafId = requestAnimationFrame(loop);
+        }
     }
 
+    /* ── 8. Dismiss / Clean Up (Seamless Unveiling of Homepage) ─────── */
     function dismissIntro() {
-        cleanup();
+        if (isExiting) return;
+        isExiting = true;
+
         overlay.classList.add('intro-exit');
-        // After CSS transition, remove from DOM and restore scroll
+
+        // Restore scroll and remove overlay after transition
         setTimeout(() => {
-            overlay.remove();
-            document.body.style.overflow = origOverflow;
-        }, 950);
+            if (rafId) cancelAnimationFrame(rafId);
+            window.removeEventListener('resize', onResize);
+            if (overlay && overlay.parentNode) {
+                overlay.parentNode.removeChild(overlay);
+            }
+            document.body.style.overflow = originalOverflow;
+        }, 1600);
     }
 
-    /* ── 9. Progress bar animation ─────────────────────────────────── */
-    function startProgress() {
-        progressBar.style.transition = `width ${CFG.progressDur}ms linear`;
-        // Force reflow before changing width
-        void progressBar.offsetWidth;
-        progressBar.style.width = '100%';
-    }
-
-    /* ── 10. Skip button ───────────────────────────────────────────── */
-    skipBtn.addEventListener('click', dismissIntro);
-    skipBtn.addEventListener('touchend', (e) => {
-        e.preventDefault();
+    // Skip button click handler
+    skipBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
         dismissIntro();
     });
-    // Mobile: also allow tap anywhere if no scroll
-    let touchStartY = 0;
-    overlay.addEventListener('touchstart', (e) => { touchStartY = e.touches[0].clientY; }, { passive: true });
 
-    /* ── 11. Animation timeline ────────────────────────────────────── */
-    function scheduleTimer(fn, delay) {
-        const id = setTimeout(fn, delay);
-        allTimers.push(id);
-        return id;
-    }
+    /* ── 9. Choreographed Luxury Sequence Timeline ─────────────────── */
+    function runIntroSequence() {
+        // Start particle render loop
+        rafId = requestAnimationFrame(loop);
 
-    // Kick off once fonts/images are ready or after a short guard
-    function startTimeline() {
-        startProgress();
+        // T + 0.2s: Subtle ambient illumination appears
+        setTimeout(() => {
+            ambientEl.classList.add('amb-in');
+        }, 200);
 
-        // T+200ms: bottle appears
-        scheduleTimer(() => {
-            bottleWrap.classList.add('bottle-visible');
-        }, CFG.bottleDelay);
+        // T + 0.35s: Minimal generic spray nozzle glides in smoothly
+        setTimeout(() => {
+            nozzleEl.classList.add('nozzle-in');
+        }, 350);
 
-        // T+900ms: light sweep
-        scheduleTimer(() => {
-            lightSweep.classList.add('sweep-active');
-        }, CFG.sweepDelay);
+        // T + 0.65s: Nozzle presses down, releases luxury spray & sound effect
+        setTimeout(() => {
+            nozzleEl.classList.add('is-pressed');
+            playLuxurySpraySound();
+            triggerSprayBlast();
+        }, 650);
 
-        // T+1300ms: spray starts
-        scheduleTimer(() => {
-            startSpray();
-        }, CFG.sprayDelay);
+        // T + 0.85s: Nozzle returns up and gently fades away, leaving only the mist
+        setTimeout(() => {
+            nozzleEl.classList.remove('is-pressed');
+            nozzleEl.classList.add('nozzle-out');
+        }, 850);
 
-        // T+2400ms: BAAMANN logo
-        scheduleTimer(() => {
-            logoEl.classList.add('logo-visible');
-        }, CFG.logoDelay);
-
-        // T+2700ms: tagline
-        scheduleTimer(() => {
-            taglineEl.classList.add('tagline-visible');
-        }, CFG.taglineDelay);
-
-        // T+3500ms: begin exit
-        scheduleTimer(() => {
+        // T + 1.85s: Mist reaches full dispersion and begins unveiling homepage underneath
+        setTimeout(() => {
             dismissIntro();
-        }, CFG.exitDelay);
+        }, 1900);
     }
 
-    /* ── 12. Wait for DOM ready & bottle image to load ─────────────── */
-    function init() {
-        if (bottleImg.complete) {
-            startTimeline();
-        } else {
-            bottleImg.addEventListener('load',  startTimeline, { once: true });
-            // Fallback: start anyway after 800ms if image stalls
-            const fallback = setTimeout(startTimeline, 800);
-            bottleImg.addEventListener('load',  () => clearTimeout(fallback), { once: true });
-            bottleImg.addEventListener('error', () => { clearTimeout(fallback); startTimeline(); }, { once: true });
-        }
-    }
-
+    // Start on DOM ready or immediate if already loaded
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', init, { once: true });
+        document.addEventListener('DOMContentLoaded', runIntroSequence, { once: true });
     } else {
-        init();
+        runIntroSequence();
     }
 
 })();

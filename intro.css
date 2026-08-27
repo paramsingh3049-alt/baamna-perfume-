@@ -1,47 +1,26 @@
 /* ═══════════════════════════════════════════════════════════════════
-   BAAMANN — Cinematic Intro Animation  |  intro.css
-   ADD-ON ONLY — does NOT affect any existing site styles
+   BAAMANN — Cinematic Perfume Mist Intro  |  intro.css
+   ADD-ON ONLY. Zero changes to any existing site styles.
    ═══════════════════════════════════════════════════════════════════ */
 
-/* ── Overlay wrapper ─────────────────────────────────────────────── */
+/* ── Fullscreen overlay ──────────────────────────────────────────── */
 #baamann-intro {
     position: fixed;
     inset: 0;
     z-index: 1000000;
-    background: #060606;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    background: #020202;
     overflow: hidden;
-    /* Start fully opaque */
     opacity: 1;
-    transition: opacity 0.9s cubic-bezier(0.4, 0, 0.2, 1),
-                transform 0.9s cubic-bezier(0.4, 0, 0.2, 1);
-    transform: scale(1);
-    will-change: opacity, transform;
+    transition: opacity 1.6s cubic-bezier(0.4, 0, 0.15, 1);
+    will-change: opacity;
 }
 
-/* Fade-out + subtle zoom state triggered by JS */
 #baamann-intro.intro-exit {
     opacity: 0;
-    transform: scale(1.04);
     pointer-events: none;
 }
 
-/* ── Ambient radial glow behind bottle ───────────────────────────── */
-#baamann-intro::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background:
-        radial-gradient(ellipse 60% 55% at 50% 58%,
-            rgba(197, 165, 120, 0.09) 0%,
-            transparent 70%);
-    pointer-events: none;
-    z-index: 1;
-}
-
-/* ── Particle canvas ─────────────────────────────────────────────── */
+/* ── Full-screen canvas for particles / mist ─────────────────────── */
 #intro-canvas {
     position: absolute;
     inset: 0;
@@ -49,205 +28,240 @@
     height: 100%;
     pointer-events: none;
     z-index: 2;
+    display: block;
 }
 
-/* ── Bottle container ────────────────────────────────────────────── */
-#intro-bottle-wrap {
-    position: relative;
-    z-index: 3;
+/* ── Cinematic ambient light — very subtle radial behind nozzle ───── */
+#intro-ambient {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: radial-gradient(
+        ellipse 42% 38% at 50% 54%,
+        rgba(230, 215, 195, 0.055) 0%,
+        rgba(180, 155, 115, 0.025) 45%,
+        transparent 70%
+    );
+    opacity: 0;
+    transition: opacity 0.9s ease;
+}
+
+#intro-ambient.amb-in {
+    opacity: 1;
+}
+
+/* ── Nozzle wrapper ──────────────────────────────────────────────── */
+#intro-nozzle {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 4;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0;
-
-    /* Start invisible, small — JS triggers entrance */
     opacity: 0;
-    transform: scale(0.82) translateY(18px);
-    transition: opacity 1.1s cubic-bezier(0.22, 1, 0.36, 1),
-                transform 1.1s cubic-bezier(0.22, 1, 0.36, 1);
-    will-change: opacity, transform;
-}
-
-#intro-bottle-wrap.bottle-visible {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-}
-
-/* ── Bottle image ────────────────────────────────────────────────── */
-#intro-bottle-img {
-    width: clamp(160px, 22vw, 320px);
-    height: auto;
-    display: block;
-    border-radius: 4px;
-    /* Subtle glass/reflection sheen via CSS */
-    filter:
-        drop-shadow(0 0 60px rgba(197, 165, 120, 0.18))
-        drop-shadow(0 20px 80px rgba(0, 0, 0, 0.85))
-        drop-shadow(0 0 120px rgba(197, 165, 120, 0.06));
-    position: relative;
-}
-
-/* ── Cinematic light sweep over bottle ───────────────────────────── */
-#intro-light-sweep {
-    position: absolute;
-    top: -10%;
-    left: -60%;
-    width: 50%;
-    height: 120%;
-    background: linear-gradient(
-        105deg,
-        transparent 0%,
-        rgba(255, 245, 220, 0.00) 30%,
-        rgba(255, 245, 220, 0.18) 50%,
-        rgba(255, 245, 220, 0.00) 70%,
-        transparent 100%
-    );
-    border-radius: 50%;
+    /* Entrance: fade + rise */
+    transition:
+        opacity  0.9s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
     pointer-events: none;
-    z-index: 4;
-    opacity: 0;
-    transform: skewX(-15deg);
-    transition: none;
+    user-select: none;
 }
 
-#intro-light-sweep.sweep-active {
-    animation: lightSweep 1.4s cubic-bezier(0.4, 0, 0.6, 1) forwards;
-}
-
-@keyframes lightSweep {
-    0%   { left: -60%; opacity: 0; }
-    10%  { opacity: 1; }
-    80%  { opacity: 0.9; }
-    100% { left: 130%; opacity: 0; }
-}
-
-/* ── BAAMANN logo reveal ─────────────────────────────────────────── */
-#intro-brand-logo {
-    width: clamp(100px, 14vw, 190px);
-    height: auto;
-    display: block;
-    margin-top: clamp(18px, 3vw, 32px);
-    opacity: 0;
-    transform: translateY(10px);
-    transition: opacity 1s cubic-bezier(0.22, 1, 0.36, 1),
-                transform 1s cubic-bezier(0.22, 1, 0.36, 1);
-    will-change: opacity, transform;
-    filter: brightness(1.1) drop-shadow(0 0 18px rgba(197, 165, 120, 0.3));
-}
-
-#intro-brand-logo.logo-visible {
+#intro-nozzle.nozzle-in {
     opacity: 1;
-    transform: translateY(0);
+    transform: translate(-50%, -50%) translateY(0);
 }
 
-/* ── Tagline under logo ──────────────────────────────────────────── */
-#intro-tagline {
-    font-family: 'Montserrat', sans-serif;
-    font-size: clamp(7px, 1vw, 10px);
-    font-weight: 300;
-    letter-spacing: 0.35em;
-    color: rgba(197, 165, 120, 0.55);
-    text-transform: uppercase;
-    margin-top: clamp(6px, 1vw, 10px);
+#intro-nozzle.nozzle-out {
     opacity: 0;
-    transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.25s;
+    transform: translate(-50%, -50%) translateY(8px) scale(0.94);
+    transition:
+        opacity  0.7s cubic-bezier(0.4, 0, 0.8, 1),
+        transform 0.7s cubic-bezier(0.4, 0, 0.8, 1);
 }
 
-#intro-tagline.tagline-visible {
-    opacity: 1;
+/* ──────────────────────────────────────────────────────────────────
+   NOZZLE SHAPE (pure CSS — no images, no SVG files)
+   Top-down / slightly-angled view of a minimal spray actuator head
+   ────────────────────────────────────────────────────────────────── */
+
+/* Actuator button (top, pressable) */
+.nz-btn {
+    width: 50px;
+    height: 24px;
+    border-radius: 5px 5px 2px 2px;
+    background: linear-gradient(170deg, #222 0%, #161616 55%, #1d1d1d 100%);
+    border: 0.5px solid rgba(255, 255, 255, 0.055);
+    border-bottom: none;
+    box-shadow:
+        inset 0 1px 3px rgba(255, 255, 255, 0.045),
+        inset 0 -1px 2px rgba(0, 0, 0, 0.5),
+        0 -4px 12px rgba(0, 0, 0, 0.45);
+    position: relative;
+    transition: transform 0.11s cubic-bezier(0.4, 0, 0.6, 1);
+}
+
+/* Sheen line on button */
+.nz-btn::after {
+    content: '';
+    position: absolute;
+    left: 9px;
+    top: 5px;
+    width: 3px;
+    height: 12px;
+    background: rgba(255, 255, 255, 0.042);
+    border-radius: 2px;
+}
+
+/* Connecting barrel */
+.nz-barrel {
+    width: 16px;
+    height: 13px;
+    background: linear-gradient(90deg, #111 0%, #191919 50%, #111 100%);
+    border-left:  0.5px solid rgba(255, 255, 255, 0.025);
+    border-right: 0.5px solid rgba(255, 255, 255, 0.025);
+}
+
+/* Main spray head body */
+.nz-head {
+    width: 66px;
+    height: 44px;
+    border-radius: 5px;
+    background: linear-gradient(145deg, #1e1e1e 0%, #101010 52%, #1a1a1a 100%);
+    border: 0.5px solid rgba(255, 255, 255, 0.048);
+    box-shadow:
+        inset 1px 1px 4px rgba(255, 255, 255, 0.028),
+        inset -1px -1px 3px rgba(0, 0, 0, 0.6),
+        0 8px 32px rgba(0, 0, 0, 0.75),
+        0 2px 10px rgba(0, 0, 0, 0.5);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+/* Vertical sheen on head */
+.nz-head::before {
+    content: '';
+    position: absolute;
+    left: 9px;
+    top: 6px;
+    bottom: 6px;
+    width: 3px;
+    background: rgba(255, 255, 255, 0.032);
+    border-radius: 2px;
+}
+
+/* Spray opening hole */
+.nz-hole {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #020202 0%, #0b0b0b 55%, #141414 100%);
+    border: 1px solid rgba(255, 255, 255, 0.042);
+    box-shadow:
+        inset 0 1px 4px rgba(0, 0, 0, 0.9),
+        0 0 10px rgba(0, 0, 0, 0.6);
+    position: relative;
+    z-index: 1;
+}
+
+/* Inner dot of spray hole */
+.nz-hole::after {
+    content: '';
+    position: absolute;
+    inset: 50%;
+    transform: translate(-50%, -50%);
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #010101;
+}
+
+/* Bottom collar / ring */
+.nz-collar {
+    width: 74px;
+    height: 7px;
+    background: linear-gradient(180deg, #191919 0%, #0d0d0d 100%);
+    border-radius: 0 0 3px 3px;
+    border: 0.5px solid rgba(255, 255, 255, 0.032);
+    border-top: none;
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.6);
+}
+
+/* ── PRESS animation: actuator pushes down ───────────────────────── */
+#intro-nozzle.is-pressed .nz-btn {
+    transform: translateY(5px);
 }
 
 /* ── Skip button ─────────────────────────────────────────────────── */
-#intro-skip-btn {
+#intro-skip {
     position: absolute;
-    bottom: clamp(20px, 4vw, 36px);
-    right: clamp(20px, 4vw, 36px);
-    z-index: 5;
+    bottom: clamp(20px, 3.5vw, 34px);
+    right:  clamp(20px, 3.5vw, 34px);
+    z-index: 10;
     background: transparent;
     border: none;
     outline: none;
     cursor: pointer !important;
     font-family: 'Montserrat', sans-serif;
-    font-size: clamp(8px, 1.1vw, 10px);
+    font-size: clamp(7px, 0.95vw, 9px);
     font-weight: 300;
-    letter-spacing: 0.28em;
-    color: rgba(197, 165, 120, 0.45);
+    letter-spacing: 0.34em;
+    color: rgba(197, 165, 120, 0.36);
     text-transform: uppercase;
     padding: 10px 14px;
-    transition: color 0.3s ease, opacity 0.3s ease;
-    opacity: 0;
-    animation: skipFadeIn 0.6s 0.8s forwards;
     display: flex;
     align-items: center;
-    gap: 7px;
+    gap: 5px;
+    line-height: 1;
+    transition: color 0.35s ease;
+    opacity: 0;
+    animation: skipReveal 0.5s 1.1s ease forwards;
 }
 
-#intro-skip-btn::after {
+#intro-skip:hover {
+    color: rgba(197, 165, 120, 0.82);
+}
+
+#intro-skip::after {
     content: '›';
-    font-size: 1.4em;
+    font-size: 1.35em;
     line-height: 1;
-    opacity: 0.6;
     transition: transform 0.3s ease;
 }
 
-#intro-skip-btn:hover {
-    color: rgba(197, 165, 120, 0.9);
-}
-
-#intro-skip-btn:hover::after {
+#intro-skip:hover::after {
     transform: translateX(3px);
 }
 
-@keyframes skipFadeIn {
-    to { opacity: 1; }
+@keyframes skipReveal {
+    from { opacity: 0; }
+    to   { opacity: 1; }
 }
 
-/* ── Depth glow orbs (cosmetic ambience) ─────────────────────────── */
-.intro-orb {
-    position: absolute;
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 1;
-    animation: orbFloat linear infinite;
-    will-change: transform, opacity;
-}
-
-@keyframes orbFloat {
-    0%   { transform: translateY(0) scale(1);   opacity: var(--orb-opacity); }
-    50%  { transform: translateY(-18px) scale(1.1); opacity: calc(var(--orb-opacity) * 0.6); }
-    100% { transform: translateY(0) scale(1);   opacity: var(--orb-opacity); }
-}
-
-/* ── Progress bar (ultra-subtle at bottom) ───────────────────────── */
-#intro-progress {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    height: 1px;
-    width: 0%;
-    background: linear-gradient(90deg,
-        transparent,
-        rgba(197, 165, 120, 0.6) 30%,
-        rgba(197, 165, 120, 0.8) 60%,
-        transparent
-    );
-    transition: width linear;
-    z-index: 5;
-}
-
-/* ── Mobile adjustments ──────────────────────────────────────────── */
+/* ── Mobile responsive ───────────────────────────────────────────── */
 @media (max-width: 600px) {
-    #intro-bottle-img {
-        width: clamp(140px, 58vw, 220px);
+    #intro-nozzle {
+        top: 48%;
     }
 
-    #intro-brand-logo {
-        width: clamp(90px, 40vw, 150px);
-    }
+    .nz-btn    { width: 42px; height: 20px; }
+    .nz-barrel { width: 13px; height: 11px; }
+    .nz-head   { width: 56px; height: 36px; }
+    .nz-collar { width: 62px; height: 6px; }
+    .nz-hole   { width: 11px; height: 11px; }
 }
 
 @media (max-width: 380px) {
-    #intro-bottle-img {
-        width: 62vw;
+    #intro-nozzle {
+        transform: translate(-50%, -50%) scale(0.82);
+    }
+    #intro-nozzle.nozzle-in {
+        transform: translate(-50%, -50%) scale(0.82);
     }
 }
