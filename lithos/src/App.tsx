@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import './index.css';
+import HalftoneWordmarkFooter from '@/components/ui/halftone-wordmark-footer';
 
 // ─── Asset URLs ──────────────────────────────────────────────────────────────
 const BG_IMAGE_1 =
@@ -261,6 +262,40 @@ export default function App() {
           </button>
         </div>
       </section>
+
+      {/* ── Halftone Wordmark Footer ────────────────────────────────────── */}
+      <HalftoneWordmarkFooter
+        wordmark="lithos"
+        label="Lithos Geology"
+        meta="©2026 · Deep Time Cartography"
+        preset="night"
+        columns={[
+          {
+            title: "Explore",
+            links: [
+              { label: "Interactive Maps", href: "#" },
+              { label: "Sediment Layers", href: "#" },
+              { label: "Fossil Archive", href: "#" },
+            ],
+          },
+          {
+            title: "Guides",
+            links: [
+              { label: "Field Guides", href: "#" },
+              { label: "Live Tour", href: "#" },
+              { label: "Research Papers", href: "#" },
+            ],
+          },
+          {
+            title: "Connect",
+            links: [
+              { label: "contact@lithos.geo", href: "#" },
+              { label: "Field Reports", href: "#" },
+              { label: "Discord Studio", href: "#" },
+            ],
+          },
+        ]}
+      />
     </div>
   );
 }
